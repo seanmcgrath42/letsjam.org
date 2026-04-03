@@ -1,0 +1,15 @@
+<header class="site-header">
+  <div class="header-inner">
+    <a href="{{ '/' | relative_url }}" class="site-logo">
+      <img src="{{ '/assets/images/lets-jam-logo-2025.png' | relative_url }}" alt="Let's Jam Logo">
+    </a>
+    <nav class="site-nav">
+      <button class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+      <ul class="nav-links">
+        {% for link in site.navigation %}
+        <li><a href="{{ link.url | relative_url }}" {% if page.url == link.url %}class="active"{% endif %}>{{ link.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+</header>

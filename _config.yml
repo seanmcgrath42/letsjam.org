@@ -1,12 +1,37 @@
-title: Lets Jam
-description: Just turn up and play — bringing music enthusiasts together to jam, make friends and have fun.
-url: https://letsjam.org
+title: Let's Jam
+tagline: Just turn up and play
+description: >-
+  Bringing music enthusiasts together to jam, make friends and have fun.
+  Weekly jam circles in Galway & Clare, Ireland.
+url: "https://www.letsjam.org"
 baseurl: ""
+email: letsjamhq@gmail.com
 
 # Build settings
 markdown: kramdown
 permalink: pretty
+
+# Navigation
+navigation:
+  - title: Home
+    url: /
+  - title: How Lets Jam Works
+    url: /how-lets-jam-works/
+  - title: Our Jam Circles
+    url: /jam-circles/
+  - title: Our Events
+    url: /events/
+  - title: Contact
+    url: /contact/
+
+# Exclude backup files from build
 exclude:
-  - README.md
-  - Gemfile
   - Gemfile.lock
+  - html/
+  - image-urls.txt
+  - "*.backup.md"
+  - README.md
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag

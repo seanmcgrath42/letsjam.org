@@ -1,36 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ page.title }} – {{ site.title }}</title>
-  <meta name="description" content="{{ page.description | default: site.description }}">
-  <link rel="icon" type="image/png" href="{{ '/assets/images/favicon.png' | relative_url }}">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-</head>
-<body>
-  {% include nav.html %}
-  <main>
-    <section class="hero">
-      <div class="section-inner">
-        <h1>{{ page.title }}</h1>
-      </div>
-    </section>
-    <section class="section">
-      <div class="section-inner page-content">
-        {{ content }}
-      </div>
-    </section>
-  </main>
-  {% include footer.html %}
-  <script>
-    document.querySelector('.menu-toggle').addEventListener('click', function() {
-      this.classList.toggle('active');
-      document.querySelector('.main-nav').classList.toggle('open');
-    });
-  </script>
-</body>
-</html>
+---
+layout: default
+---
+<article class="page-content">
+  {% if page.hero_image %}
+  <div class="page-hero" style="background-image: url('{{ page.hero_image | relative_url }}');">
+    <h1>{{ page.title }}</h1>
+  </div>
+  {% else %}
+  <div class="page-header">
+    <h1>{{ page.title }}</h1>
+  </div>
+  {% endif %}
+
+  <div class="page-body">
+    {{ content }}
+  </div>
+</article>

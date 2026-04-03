@@ -1,30 +1,25 @@
-/* ==========================================================================
-   Lets Jam — Site Styles
-   Color palette from WordPress/Brizy:
-     color1: rgb(243, 235, 224) — cream/warm white
-     color2: rgb(65, 64, 66)    — dark charcoal
-     color3: rgb(190, 173, 78)  — gold/olive
-     color5: rgb(209, 126, 89)  — warm orange
-     color6: rgb(226, 183, 99)  — gold
-     color8: rgb(68, 114, 144)  — steel blue
-   Font: Figtree
-   ========================================================================== */
+/* =============================================
+   Let's Jam - Jekyll Site Styles
+   ============================================= */
 
-:root {
-  --cream: #f3ebe0;
-  --charcoal: #414042;
-  --gold: #bead4e;
-  --orange: #d17e59;
-  --warm-gold: #e2b763;
-  --blue: #447290;
-  --white: #ffffff;
-  --black: #000000;
-}
-
+/* --- Reset & Base --- */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+:root {
+  --color-primary: #1a1a2e;
+  --color-accent: #e94560;
+  --color-accent-hover: #d63050;
+  --color-light: #ffffff;
+  --color-text: #333333;
+  --color-text-light: #cccccc;
+  --color-bg: #f5f5f5;
+  --color-dark-bg: #16213e;
+  --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --max-width: 1200px;
 }
 
 html {
@@ -32,264 +27,167 @@ html {
 }
 
 body {
-  font-family: 'Figtree', sans-serif;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 1.8;
-  letter-spacing: 0.5px;
-  color: var(--charcoal);
-  background-color: var(--white);
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+  font-family: var(--font-main);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  line-height: 1.6;
 }
 
 a {
-  color: var(--gold);
+  color: var(--color-accent);
   text-decoration: none;
   transition: color 0.2s;
 }
 
 a:hover {
-  color: var(--orange);
+  color: var(--color-accent-hover);
 }
 
-h1, h2, h3, h4, h5, h6 {
-  line-height: 1.3;
+img {
+  max-width: 100%;
+  height: auto;
 }
 
-h1 { font-size: 3.5rem; font-weight: 900; letter-spacing: 1px; }
-h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: 1px; }
-h3 { font-size: 1.75rem; font-weight: 600; letter-spacing: 1px; }
-h4 { font-size: 1.4rem; font-weight: 600; letter-spacing: 0.2px; }
-
-/* ==========================================================================
-   Header / Navigation
-   ========================================================================== */
-
+/* --- Header --- */
 .site-header {
-  background-color: var(--charcoal);
+  background-color: var(--color-primary);
+  padding: 1rem 0;
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .header-inner {
-  max-width: 1200px;
+  max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0.75rem 1.5rem;
+  padding: 0 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.logo img {
-  height: 60px;
+.site-logo img {
+  height: 50px;
   width: auto;
 }
 
-.main-nav ul {
+.site-nav .nav-links {
   list-style: none;
   display: flex;
   gap: 2rem;
 }
 
-.main-nav a {
-  color: var(--cream);
+.site-nav .nav-links a {
+  color: var(--color-light);
   font-weight: 500;
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
   text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
   padding: 0.5rem 0;
-  position: relative;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s, color 0.2s;
 }
 
-.main-nav a::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: var(--gold);
-  transition: width 0.3s;
+.site-nav .nav-links a:hover,
+.site-nav .nav-links a.active {
+  color: var(--color-accent);
+  border-bottom-color: var(--color-accent);
 }
 
-.main-nav a:hover,
-.main-nav a.active {
-  color: var(--gold);
-}
-
-.main-nav a:hover::after,
-.main-nav a.active::after {
-  width: 100%;
-}
-
-/* Mobile menu toggle */
-.menu-toggle {
+.nav-toggle {
   display: none;
   background: none;
   border: none;
+  color: var(--color-light);
+  font-size: 1.5rem;
   cursor: pointer;
-  padding: 0.5rem;
-  flex-direction: column;
-  gap: 5px;
 }
 
-.menu-toggle span {
-  display: block;
-  width: 26px;
-  height: 3px;
-  background-color: var(--cream);
-  border-radius: 2px;
-  transition: transform 0.3s, opacity 0.3s;
-}
-
-.menu-toggle.active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 6px);
-}
-
-.menu-toggle.active span:nth-child(2) {
-  opacity: 0;
-}
-
-.menu-toggle.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -6px);
-}
-
-/* ==========================================================================
-   Hero Sections
-   ========================================================================== */
-
+/* --- Hero Section (Home) --- */
 .hero {
-  background-color: var(--charcoal);
-  color: var(--white);
+  background-color: var(--color-dark-bg);
+  color: var(--color-light);
   text-align: center;
-  padding: 5rem 1.5rem;
+  padding: 4rem 1.5rem;
   position: relative;
   overflow: hidden;
 }
 
-.hero.hero-home {
-  padding: 6rem 1.5rem;
-  background: linear-gradient(135deg, var(--charcoal) 0%, #2a2a2c 100%);
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .hero h1 {
-  color: var(--cream);
+  font-size: 3rem;
   margin-bottom: 0.5rem;
 }
 
-.hero h2 {
-  color: var(--gold);
-  margin-bottom: 1rem;
+.hero .subtitle {
+  font-size: 1.3rem;
+  color: var(--color-text-light);
+  margin-bottom: 2rem;
 }
 
-.hero h4 {
-  color: var(--cream);
-  font-weight: 400;
-  opacity: 0.9;
+.hero-image img {
+  max-width: 500px;
+  border-radius: 8px;
+  margin: 2rem auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
-
-.hero p {
-  max-width: 700px;
-  margin: 1rem auto;
-  font-size: 1.1rem;
-  opacity: 0.9;
-}
-
-/* ==========================================================================
-   Buttons
-   ========================================================================== */
 
 .btn {
   display: inline-block;
-  padding: 0.85rem 2rem;
+  background-color: var(--color-accent);
+  color: var(--color-light);
+  padding: 0.8rem 2rem;
   border-radius: 4px;
-  font-weight: 700;
-  font-size: 0.9rem;
-  letter-spacing: 1.5px;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 1px;
   transition: background-color 0.2s, transform 0.2s;
 }
 
 .btn:hover {
+  background-color: var(--color-accent-hover);
+  color: var(--color-light);
   transform: translateY(-2px);
 }
 
-.btn-gold {
-  background-color: var(--gold);
-  color: var(--charcoal);
-}
-
-.btn-gold:hover {
-  background-color: var(--warm-gold);
-  color: var(--charcoal);
-}
-
-.btn-outline {
-  border: 2px solid var(--cream);
-  color: var(--cream);
-}
-
-.btn-outline:hover {
-  background-color: var(--cream);
-  color: var(--charcoal);
-}
-
-/* ==========================================================================
-   Content Sections
-   ========================================================================== */
-
+/* --- Sections --- */
 .section {
-  padding: 5rem 1.5rem;
-}
-
-.section-inner {
-  max-width: 1000px;
+  padding: 4rem 1.5rem;
+  max-width: var(--max-width);
   margin: 0 auto;
 }
 
 .section-dark {
-  background-color: var(--charcoal);
-  color: var(--cream);
+  background-color: var(--color-dark-bg);
+  color: var(--color-light);
+  max-width: 100%;
+  padding: 4rem 1.5rem;
 }
 
-.section-cream {
-  background-color: var(--cream);
-}
-
-.section-centered {
-  text-align: center;
+.section-dark .section-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
 }
 
 .section h2 {
-  margin-bottom: 1.5rem;
-}
-
-.section p {
+  font-size: 2rem;
   margin-bottom: 1rem;
+  text-align: center;
 }
 
-/* Two-column layout */
-.two-col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
+.section h3 {
+  font-size: 1.3rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-weight: 400;
 }
 
-.two-col img {
-  border-radius: 8px;
-}
-
-/* ==========================================================================
-   Jam Circles Cards
-   ========================================================================== */
-
+/* --- Jam Circles Grid --- */
 .circles-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -298,21 +196,21 @@ h4 { font-size: 1.4rem; font-weight: 600; letter-spacing: 0.2px; }
 }
 
 .circle-card {
-  background-color: var(--white);
+  background: var(--color-light);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .circle-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .circle-card img {
   width: 100%;
-  height: 220px;
+  height: 200px;
   object-fit: cover;
 }
 
@@ -320,326 +218,247 @@ h4 { font-size: 1.4rem; font-weight: 600; letter-spacing: 0.2px; }
   padding: 1.5rem;
 }
 
-.circle-card h3 {
+.circle-card-body h3 {
+  text-align: left;
+  font-size: 1.4rem;
   margin-bottom: 0.5rem;
 }
 
-.circle-card p {
-  font-size: 0.95rem;
-  color: #555;
-}
-
-/* ==========================================================================
-   Jam Circle Detail Page
-   ========================================================================== */
-
-.circle-detail {
-  padding: 4rem 1.5rem;
-}
-
-.circle-detail-inner {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.circle-detail h1 {
-  margin-bottom: 1rem;
-  color: var(--charcoal);
-}
-
-.circle-detail .circle-description {
-  font-size: 1.15rem;
-  margin-bottom: 2rem;
-  color: #555;
-}
-
-.circle-info {
-  background-color: var(--cream);
-  border-radius: 8px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-}
-
-.circle-info dt {
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.85rem;
-  color: var(--gold);
-  margin-bottom: 0.25rem;
-}
-
-.circle-info dd {
-  margin-bottom: 1.25rem;
-  font-size: 1.05rem;
-}
-
-.circle-info dd:last-child {
-  margin-bottom: 0;
-}
-
-/* ==========================================================================
-   Etiquette List
-   ========================================================================== */
-
-.etiquette-list {
-  list-style: none;
-  padding: 0;
-}
-
-.etiquette-list li {
-  padding: 1rem 0;
-  border-bottom: 1px solid rgba(243, 235, 224, 0.2);
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-}
-
-.section-dark .etiquette-list li {
-  border-bottom-color: rgba(243, 235, 224, 0.15);
-}
-
-.etiquette-list strong {
-  color: var(--gold);
-  white-space: nowrap;
-}
-
-/* ==========================================================================
-   About / Welcome Section
-   ========================================================================== */
-
+/* --- About Section --- */
 .about-section {
   text-align: center;
 }
 
 .about-section p {
-  max-width: 750px;
+  max-width: 700px;
   margin: 0 auto 1.5rem;
   font-size: 1.1rem;
 }
 
-/* ==========================================================================
-   Events
-   ========================================================================== */
-
-.events-placeholder {
+/* --- Page Layout --- */
+.page-header {
+  background-color: var(--color-dark-bg);
+  color: var(--color-light);
+  padding: 3rem 1.5rem;
   text-align: center;
-  padding: 3rem;
-  background-color: var(--cream);
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+}
+
+.page-hero {
+  background-size: cover;
+  background-position: center;
+  color: var(--color-light);
+  padding: 6rem 1.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.page-hero h1 {
+  position: relative;
+  font-size: 2.5rem;
+}
+
+.page-body {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.page-body h2 {
+  font-size: 1.8rem;
+  margin: 2rem 0 1rem;
+  color: var(--color-primary);
+}
+
+.page-body h3 {
+  font-size: 1.3rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.page-body h4 {
+  font-size: 1.1rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.page-body ul {
+  margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.page-body li {
+  margin-bottom: 0.4rem;
+}
+
+.page-body p {
+  margin-bottom: 1rem;
+}
+
+/* --- Jam Circle Page --- */
+.jam-circle-header {
+  background-color: var(--color-dark-bg);
+  color: var(--color-light);
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.jam-circle-header h1 {
+  font-size: 2.5rem;
+}
+
+.jam-circle-body {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.jam-circle-image img {
+  width: 100%;
   border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.events-placeholder h3 {
-  color: var(--gold);
-  margin-bottom: 0.5rem;
+.jam-circle-details {
+  background: var(--color-light);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* ==========================================================================
-   Contact
-   ========================================================================== */
+.jam-circle-details .detail {
+  margin-bottom: 1rem;
+}
 
+.jam-circle-details .detail strong {
+  color: var(--color-accent);
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.jam-circle-nav {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.circle-prev,
+.circle-next {
+  font-weight: 600;
+}
+
+/* --- Contact Page --- */
 .contact-info {
   text-align: center;
+  font-size: 1.2rem;
 }
 
-.contact-info .email-link {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--gold);
+.contact-info a {
+  font-weight: 600;
 }
 
-.contact-info .email-link:hover {
-  color: var(--orange);
-}
-
-/* ==========================================================================
-   JamFest Banner
-   ========================================================================== */
-
-.jamfest-banner {
-  background: linear-gradient(135deg, #2a2a2c 0%, var(--charcoal) 50%, #3a3a3c 100%);
-}
-
-.jamfest-banner img {
-  max-width: 500px;
-  margin: 2rem auto 0;
-  border-radius: 8px;
-}
-
-/* ==========================================================================
-   Footer
-   ========================================================================== */
-
+/* --- Footer --- */
 .site-footer {
-  background-color: var(--charcoal);
-  color: var(--cream);
-  padding: 3rem 1.5rem 1.5rem;
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  padding: 3rem 1.5rem 1rem;
 }
 
 .footer-inner {
-  max-width: 1000px;
+  max-width: var(--max-width);
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  gap: 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid rgba(243, 235, 224, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.footer-nav h4,
-.footer-social h4 {
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: var(--gold);
+.footer-inner h3 {
+  color: var(--color-light);
   margin-bottom: 1rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .footer-nav ul {
   list-style: none;
 }
 
+.footer-nav li {
+  margin-bottom: 0.5rem;
+}
+
 .footer-nav a {
-  color: var(--cream);
-  font-size: 0.95rem;
-  line-height: 2;
+  color: var(--color-text-light);
 }
 
 .footer-nav a:hover {
-  color: var(--gold);
+  color: var(--color-light);
 }
 
-.social-links {
-  display: flex;
-  gap: 1rem;
+.footer-social a {
+  color: var(--color-text-light);
 }
 
-.social-links a {
-  color: var(--cream);
-  transition: color 0.2s;
-}
-
-.social-links a:hover {
-  color: var(--gold);
+.footer-logo-img {
+  max-width: 120px;
 }
 
 .footer-bottom {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding-top: 1.5rem;
   text-align: center;
+  padding: 1.5rem 0 0.5rem;
   font-size: 0.85rem;
-  opacity: 0.6;
 }
 
-/* ==========================================================================
-   Page Content (markdown-rendered pages)
-   ========================================================================== */
-
-.page-content h2 {
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.page-content h3 {
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-}
-
-.page-content p {
-  margin-bottom: 1rem;
-}
-
-.page-content ul, .page-content ol {
-  margin-bottom: 1.5rem;
-  padding-left: 1.5rem;
-}
-
-.page-content li {
-  margin-bottom: 0.4rem;
-}
-
-.page-content img {
-  border-radius: 8px;
-  margin: 2rem auto;
-  max-width: 350px;
-}
-
-.page-content strong {
-  color: var(--gold);
-}
-
-.page-content .contact-info {
-  text-align: center;
-}
-
-.page-content .contact-info a {
-  font-size: 1.4rem;
-  font-weight: 700;
-}
-
-/* ==========================================================================
-   Responsive
-   ========================================================================== */
-
+/* --- Responsive --- */
 @media (max-width: 768px) {
-  h1 { font-size: 2.2rem; }
-  h2 { font-size: 1.8rem; }
-  h3 { font-size: 1.3rem; }
-  h4 { font-size: 1.1rem; }
-
-  .menu-toggle {
-    display: flex;
+  .nav-toggle {
+    display: block;
   }
 
-  .main-nav {
+  .site-nav .nav-links {
     display: none;
+    flex-direction: column;
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
-    background-color: var(--charcoal);
-    padding: 1rem 1.5rem 2rem;
-    border-top: 1px solid rgba(243, 235, 224, 0.1);
-  }
-
-  .main-nav.open {
-    display: block;
-  }
-
-  .main-nav ul {
-    flex-direction: column;
+    background-color: var(--color-primary);
+    padding: 1rem 1.5rem;
     gap: 0;
   }
 
-  .main-nav a {
-    display: block;
-    padding: 0.75rem 0;
+  .site-nav .nav-links.open {
+    display: flex;
   }
 
-  .hero {
-    padding: 3rem 1.5rem;
+  .site-nav .nav-links li {
+    padding: 0.5rem 0;
   }
 
-  .hero.hero-home {
-    padding: 4rem 1.5rem;
+  .hero h1 {
+    font-size: 2rem;
   }
 
-  .section {
-    padding: 3rem 1.5rem;
+  .hero .subtitle {
+    font-size: 1.1rem;
   }
 
-  .two-col {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .footer-inner {
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .jamfest-banner img {
-    max-width: 100%;
+  .page-header h1,
+  .jam-circle-header h1 {
+    font-size: 1.8rem;
   }
 }
