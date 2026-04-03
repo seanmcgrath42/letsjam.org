@@ -1,0 +1,19 @@
+<header class="site-header">
+  <div class="header-inner">
+    <a href="{{ '/' | relative_url }}" class="logo">
+      <img src="{{ '/assets/images/lets-jam-logo-2025.png' | relative_url }}" alt="Lets Jam" width="347" height="141">
+    </a>
+    <button class="menu-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>Home</a></li>
+        <li><a href="{{ '/how-lets-jam-works/' | relative_url }}" {% if page.url == '/how-lets-jam-works/' %}class="active"{% endif %}>How Lets Jam works</a></li>
+        <li><a href="{{ '/jam-circles/' | relative_url }}" {% if page.url contains 'jam-circles' %}class="active"{% endif %}>Our Jam Circles</a></li>
+        <li><a href="{{ '/events/' | relative_url }}" {% if page.url == '/events/' %}class="active"{% endif %}>Our Events</a></li>
+        <li><a href="{{ '/contact/' | relative_url }}" {% if page.url == '/contact/' %}class="active"{% endif %}>Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>

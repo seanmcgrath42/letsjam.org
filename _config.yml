@@ -1,0 +1,12 @@
+title: Lets Jam
+description: Just turn up and play — bringing music enthusiasts together to jam, make friends and have fun.
+url: https://letsjam.org
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock

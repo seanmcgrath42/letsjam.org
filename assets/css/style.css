@@ -1,0 +1,599 @@
+/* ==========================================================================
+   Lets Jam — Site Styles
+   Color palette from WordPress/Brizy:
+     color1: rgb(243, 235, 224) — cream/warm white
+     color2: rgb(65, 64, 66)    — dark charcoal
+     color3: rgb(190, 173, 78)  — gold/olive
+     color5: rgb(209, 126, 89)  — warm orange
+     color6: rgb(226, 183, 99)  — gold
+     color8: rgb(68, 114, 144)  — steel blue
+   Font: Figtree
+   ========================================================================== */
+
+:root {
+  --cream: #f3ebe0;
+  --charcoal: #414042;
+  --gold: #bead4e;
+  --orange: #d17e59;
+  --warm-gold: #e2b763;
+  --blue: #447290;
+  --white: #ffffff;
+  --black: #000000;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Figtree', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.8;
+  letter-spacing: 0.5px;
+  color: var(--charcoal);
+  background-color: var(--white);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--gold);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--orange);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.3;
+}
+
+h1 { font-size: 3.5rem; font-weight: 900; letter-spacing: 1px; }
+h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: 1px; }
+h3 { font-size: 1.75rem; font-weight: 600; letter-spacing: 1px; }
+h4 { font-size: 1.4rem; font-weight: 600; letter-spacing: 0.2px; }
+
+/* ==========================================================================
+   Header / Navigation
+   ========================================================================== */
+
+.site-header {
+  background-color: var(--charcoal);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo img {
+  height: 60px;
+  width: auto;
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.main-nav a {
+  color: var(--cream);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 0.5rem 0;
+  position: relative;
+}
+
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--gold);
+  transition: width 0.3s;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+  color: var(--gold);
+}
+
+.main-nav a:hover::after,
+.main-nav a.active::after {
+  width: 100%;
+}
+
+/* Mobile menu toggle */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 26px;
+  height: 3px;
+  background-color: var(--cream);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.menu-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 6px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -6px);
+}
+
+/* ==========================================================================
+   Hero Sections
+   ========================================================================== */
+
+.hero {
+  background-color: var(--charcoal);
+  color: var(--white);
+  text-align: center;
+  padding: 5rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero.hero-home {
+  padding: 6rem 1.5rem;
+  background: linear-gradient(135deg, var(--charcoal) 0%, #2a2a2c 100%);
+}
+
+.hero h1 {
+  color: var(--cream);
+  margin-bottom: 0.5rem;
+}
+
+.hero h2 {
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+
+.hero h4 {
+  color: var(--cream);
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.hero p {
+  max-width: 700px;
+  margin: 1rem auto;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn {
+  display: inline-block;
+  padding: 0.85rem 2rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-gold {
+  background-color: var(--gold);
+  color: var(--charcoal);
+}
+
+.btn-gold:hover {
+  background-color: var(--warm-gold);
+  color: var(--charcoal);
+}
+
+.btn-outline {
+  border: 2px solid var(--cream);
+  color: var(--cream);
+}
+
+.btn-outline:hover {
+  background-color: var(--cream);
+  color: var(--charcoal);
+}
+
+/* ==========================================================================
+   Content Sections
+   ========================================================================== */
+
+.section {
+  padding: 5rem 1.5rem;
+}
+
+.section-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.section-dark {
+  background-color: var(--charcoal);
+  color: var(--cream);
+}
+
+.section-cream {
+  background-color: var(--cream);
+}
+
+.section-centered {
+  text-align: center;
+}
+
+.section h2 {
+  margin-bottom: 1.5rem;
+}
+
+.section p {
+  margin-bottom: 1rem;
+}
+
+/* Two-column layout */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.two-col img {
+  border-radius: 8px;
+}
+
+/* ==========================================================================
+   Jam Circles Cards
+   ========================================================================== */
+
+.circles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.circle-card {
+  background-color: var(--white);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.circle-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.circle-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.circle-card-body {
+  padding: 1.5rem;
+}
+
+.circle-card h3 {
+  margin-bottom: 0.5rem;
+}
+
+.circle-card p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* ==========================================================================
+   Jam Circle Detail Page
+   ========================================================================== */
+
+.circle-detail {
+  padding: 4rem 1.5rem;
+}
+
+.circle-detail-inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.circle-detail h1 {
+  margin-bottom: 1rem;
+  color: var(--charcoal);
+}
+
+.circle-detail .circle-description {
+  font-size: 1.15rem;
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.circle-info {
+  background-color: var(--cream);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.circle-info dt {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.85rem;
+  color: var(--gold);
+  margin-bottom: 0.25rem;
+}
+
+.circle-info dd {
+  margin-bottom: 1.25rem;
+  font-size: 1.05rem;
+}
+
+.circle-info dd:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   Etiquette List
+   ========================================================================== */
+
+.etiquette-list {
+  list-style: none;
+  padding: 0;
+}
+
+.etiquette-list li {
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(243, 235, 224, 0.2);
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.section-dark .etiquette-list li {
+  border-bottom-color: rgba(243, 235, 224, 0.15);
+}
+
+.etiquette-list strong {
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   About / Welcome Section
+   ========================================================================== */
+
+.about-section {
+  text-align: center;
+}
+
+.about-section p {
+  max-width: 750px;
+  margin: 0 auto 1.5rem;
+  font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   Events
+   ========================================================================== */
+
+.events-placeholder {
+  text-align: center;
+  padding: 3rem;
+  background-color: var(--cream);
+  border-radius: 8px;
+}
+
+.events-placeholder h3 {
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+/* ==========================================================================
+   Contact
+   ========================================================================== */
+
+.contact-info {
+  text-align: center;
+}
+
+.contact-info .email-link {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.contact-info .email-link:hover {
+  color: var(--orange);
+}
+
+/* ==========================================================================
+   JamFest Banner
+   ========================================================================== */
+
+.jamfest-banner {
+  background: linear-gradient(135deg, #2a2a2c 0%, var(--charcoal) 50%, #3a3a3c 100%);
+}
+
+.jamfest-banner img {
+  max-width: 500px;
+  margin: 2rem auto 0;
+  border-radius: 8px;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.site-footer {
+  background-color: var(--charcoal);
+  color: var(--cream);
+  padding: 3rem 1.5rem 1.5rem;
+}
+
+.footer-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(243, 235, 224, 0.15);
+}
+
+.footer-nav h4,
+.footer-social h4 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+
+.footer-nav ul {
+  list-style: none;
+}
+
+.footer-nav a {
+  color: var(--cream);
+  font-size: 0.95rem;
+  line-height: 2;
+}
+
+.footer-nav a:hover {
+  color: var(--gold);
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-links a {
+  color: var(--cream);
+  transition: color 0.2s;
+}
+
+.social-links a:hover {
+  color: var(--gold);
+}
+
+.footer-bottom {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  h1 { font-size: 2.2rem; }
+  h2 { font-size: 1.8rem; }
+  h3 { font-size: 1.3rem; }
+  h4 { font-size: 1.1rem; }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .main-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--charcoal);
+    padding: 1rem 1.5rem 2rem;
+    border-top: 1px solid rgba(243, 235, 224, 0.1);
+  }
+
+  .main-nav.open {
+    display: block;
+  }
+
+  .main-nav ul {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .main-nav a {
+    display: block;
+    padding: 0.75rem 0;
+  }
+
+  .hero {
+    padding: 3rem 1.5rem;
+  }
+
+  .hero.hero-home {
+    padding: 4rem 1.5rem;
+  }
+
+  .section {
+    padding: 3rem 1.5rem;
+  }
+
+  .two-col {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .jamfest-banner img {
+    max-width: 100%;
+  }
+}
