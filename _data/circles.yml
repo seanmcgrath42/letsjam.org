@@ -1,0 +1,9 @@
+- name: Galway
+  url: /jam-circles/galway/
+  image: /assets/images/galway-jam.jpg
+  summary: "Every Saturday from 2pm – 6pm at Áras na nGael, Dominic Street, Galway."
+
+- name: Clare
+  url: /jam-circles/clare/
+  image: /assets/images/group-photo.jpg
+  summary: "Every Monday from 6pm at The Copper Jug Cafe, Ennis, Co. Clare."

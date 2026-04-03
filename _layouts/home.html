@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ site.title }} – Just turn up and play</title>
+  <meta name="description" content="{{ site.description }}">
+  <link rel="icon" type="image/png" href="{{ '/assets/images/favicon.png' | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body class="page-home">
+  {% include nav.html %}
+  <main>
+    <section class="hero hero-home">
+      <div class="section-inner">
+        <img src="{{ '/assets/images/lets-jam-logo-white.png' | relative_url }}" alt="Lets Jam" style="width: 180px; margin: 0 auto 2rem;">
+        <h1>{{ page.hero_title }}</h1>
+        <h2>{{ page.hero_subtitle }}</h2>
+        {% if page.hero_details %}
+        {% for line in page.hero_details %}
+        <h4>{{ line }}</h4>
+        {% endfor %}
+        {% endif %}
+        <p style="margin-top: 2rem;">{{ page.hero_text }}</p>
+        <p>If you're new to Let's Jam and JamFest, you can learn all about our Jam Circle etiquette here.</p>
+        <a href="{{ '/how-lets-jam-works/' | relative_url }}" class="btn btn-gold">How our Jam Circles work</a>
+      </div>
+    </section>
+
+    <section class="section section-cream section-centered">
+      <div class="section-inner">
+        <div class="two-col">
+          <div>
+            <img src="{{ '/assets/images/turn-up-jam-circle.png' | relative_url }}" alt="Turn up and jam" style="max-width: 300px; margin: 0 auto;">
+          </div>
+          <div>
+            <h4>Bringing music enthusiasts together to jam, make friends and have fun.</h4>
+            <br>
+            <a href="{{ '/jam-circles/' | relative_url }}" class="btn btn-gold">Join a Jam Circle</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-centered">
+      <div class="section-inner">
+        <h2>Our Jam Circles</h2>
+        <p>We currently run jam circles weekly in Galway &amp; Clare with more circles opening up in each county.</p>
+        <div class="circles-grid">
+          {% for circle in site.data.circles %}
+          <a href="{{ circle.url | relative_url }}" class="circle-card">
+            <img src="{{ circle.image | relative_url }}" alt="{{ circle.name }} Jam Circle">
+            <div class="circle-card-body">
+              <h3>{{ circle.name }}</h3>
+              <p>{{ circle.summary }}</p>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark about-section">
+      <div class="section-inner">
+        <h2>About Us</h2>
+        {{ content }}
+        <a href="{{ '/how-lets-jam-works/' | relative_url }}" class="btn btn-outline">How Lets Jam works</a>
+      </div>
+    </section>
+  </main>
+  {% include footer.html %}
+  <script>
+    document.querySelector('.menu-toggle').addEventListener('click', function() {
+      this.classList.toggle('active');
+      document.querySelector('.main-nav').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

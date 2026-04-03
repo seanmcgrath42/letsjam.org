@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} – {{ site.title }}</title>
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  <link rel="icon" type="image/png" href="{{ '/assets/images/favicon.png' | relative_url }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+</head>
+<body>
+  {% include nav.html %}
+  <main>
+    <section class="hero">
+      <div class="section-inner">
+        <h1>{{ page.title }}</h1>
+      </div>
+    </section>
+
+    <section class="circle-detail">
+      <div class="circle-detail-inner">
+        {% if page.image %}
+        <img src="{{ page.image | relative_url }}" alt="{{ page.title }}" style="border-radius: 8px; margin-bottom: 2rem;">
+        {% endif %}
+
+        {{ content }}
+
+        <dl class="circle-info">
+          <dt>When</dt>
+          <dd>{{ page.when }}</dd>
+
+          <dt>Where</dt>
+          <dd>{{ page.where }}</dd>
+
+          <dt>Follow Us</dt>
+          <dd>
+            <a href="https://www.facebook.com/letsjamhq" target="_blank" rel="noopener">Facebook</a> &middot;
+            <a href="https://www.instagram.com/letsjamhq" target="_blank" rel="noopener">Instagram</a>
+          </dd>
+        </dl>
+
+        {% if page.next_circle %}
+        <p><a href="{{ page.next_circle.url | relative_url }}" class="btn btn-gold">Next: {{ page.next_circle.name }} &rarr;</a></p>
+        {% endif %}
+        {% if page.prev_circle %}
+        <p><a href="{{ page.prev_circle.url | relative_url }}" class="btn btn-gold">&larr; Previous: {{ page.prev_circle.name }}</a></p>
+        {% endif %}
+      </div>
+    </section>
+  </main>
+  {% include footer.html %}
+  <script>
+    document.querySelector('.menu-toggle').addEventListener('click', function() {
+      this.classList.toggle('active');
+      document.querySelector('.main-nav').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>
