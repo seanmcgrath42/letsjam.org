@@ -28,7 +28,7 @@ Lets Jam is a method of jamming that is designed to bring beginners, intermediat
 - Do you struggle to keep in time when playing with others?
 - We allocate time at the end of every jam where anything goes.
 
-![Turn up and jam](/assets/images/turn-up-jam-circle.png)
+![Turn up and jam](/assets/images/turn_up_jam_circle.png)
 
 ## Jam Circle Etiquette
 
