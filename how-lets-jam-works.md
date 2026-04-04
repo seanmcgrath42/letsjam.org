@@ -2,7 +2,7 @@
 layout: page
 title: How Lets Jam Works
 permalink: /how-lets-jam-works/
-hero_image: /assets/images/IMG_0839-scaled.jpg
+hero_image: /assets/images/jam_group_photo_2.jpg
 ---
 
 The origins of Lets Jam go back to 2014 when the first jam circle was formed in a community hall, in Barna, County Galway, Ireland. The initial idea was to blend various jamming traditions/styles in a relaxed, community-oriented jam circle.
