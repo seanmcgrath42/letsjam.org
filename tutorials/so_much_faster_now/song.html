@@ -288,62 +288,62 @@
   <script>
     // ── Song data ─────────────────────────────────────────────────────
     const songData = [
-      { time: 0.000, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "You can never catch me" },
-      { time: 15.213, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "no sir no way no" },
-      { time: 17.423, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 21.683, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "You can never catch me No sir no way no" },
-      { time: 25.959, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 30.293, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "Take all the time you need cos I" },
-      { time: 32.355, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "run so much faster" },
-      { time: 34.491, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "now" },
-      { time: 40.815, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "The same old confusions well" },
-      { time: 42.900, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "they don\u2019t bother me" },
-      { time: 47.069, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "no more (No more)" },
-      { time: 51.239, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "The same old confusions they just don\u2019t" },
-      { time: 55.451, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "bother me no more (No more)" },
-      { time: 57.508, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "I know all your" },
-      { time: 59.599, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "lies because I\u2019ve heard" },
-      { time: 65.812, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "them all before" },
-      { time: 67.897, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "You can never catch me" },
-      { time: 72.053, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "no sir no way no" },
-      { time: 76.223, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 80.372, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "You can never catch me No sir no way no" },
-      { time: 82.429, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 84.521, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "Take all the time you need cos I" },
-      { time: 90.713, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "run so much faster" },
-      { time: 92.797, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "now" },
-      { time: 96.988, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "May the dust in your" },
-      { time: 101.116, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "mouth forever remind you" },
-      { time: 105.258, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "of me (of me)" },
-      { time: 107.329, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "May the dust in your mouth forever" },
-      { time: 109.393, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "remind you of me (of me)" },
-      { time: 115.627, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "Just over your horizon" },
-      { time: 117.684, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "that\u2019s that's where I'll" },
-      { time: 121.826, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "be running free" },
-      { time: 125.975, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "You can never catch me" },
-      { time: 130.089, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "no sir no way no" },
-      { time: 132.174, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 134.217, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "You can never catch me No sir no way no" },
-      { time: 140.381, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 142.522, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "Take all the time you need cos I" },
-      { time: 146.615, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "run so much faster" },
-      { time: 150.722, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "now" },
-      { time: 154.850, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "You can never catch me" },
-      { time: 156.942, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "no sir no way no" },
-      { time: 158.999, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 165.149, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "You can never catch me No sir no way no" },
-      { time: 167.220, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 171.327, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "Take all the time you need cos I" },
-      { time: 175.442, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "run so much faster" },
-      { time: 179.618, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "now" },
-      { time: 181.648, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "You can never catch me" },
-      { time: 183.705, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "no sir no way no" },
-      { time: 187.840, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 189.883, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "You can never catch me No sir no way no" },
-      { time: 191.947, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 196.068, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "Take all the time you need cos I" },
-      { time: 198.549, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "run so much faster" },
-      { time: 201.370, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "now" }
+      { time: 0.000, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "You can never catch me" },
+      { time: 15.213, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "no sir no way no" },
+      { time: 17.423, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "how (no how)" },
+      { time: 21.683, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "You can never catch me No sir no way no" },
+      { time: 25.959, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "how (no how)" },
+      { time: 30.293, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A \u2014 7th"], text:  "Take all the time you need cos I" },
+      { time: 32.355, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "run so much faster" },
+      { time: 34.491, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "now" },
+      { time: 40.815, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "The same old confusions well" },
+      { time: 42.900, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "they don\u2019t bother me" },
+      { time: 47.069, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "no more (No more)" },
+      { time: 51.239, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "The same old confusions they just don\u2019t" },
+      { time: 55.451, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A \u2014 7th"], text:  "bother me no more (No more)" },
+      { time: 57.508, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "I know all your" },
+      { time: 59.599, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "lies because I\u2019ve heard" },
+      { time: 65.812, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "them all before" },
+      { time: 67.897, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "You can never catch me" },
+      { time: 72.053, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "no sir no way no" },
+      { time: 76.223, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "how (no how)" },
+      { time: 80.372, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A \u2014 7th"], text:  "You can never catch me No sir no way no" },
+      { time: 82.429, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "how (no how)" },
+      { time: 84.521, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "Take all the time you need cos I" },
+      { time: 90.713, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "run so much faster" },
+      { time: 92.797, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "now" },
+      { time: 96.988, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "May the dust in your" },
+      { time: 101.116, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "mouth forever remind you" },
+      { time: 105.258, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A \u2014 7th"], text:  "of me (of me)" },
+      { time: 107.329, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "May the dust in your mouth forever" },
+      { time: 109.393, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "remind you of me (of me)" },
+      { time: 115.627, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "Just over your horizon" },
+      { time: 117.684, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "that\u2019s that's where I'll" },
+      { time: 121.826, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "be running free" },
+      { time: 125.975, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "You can never catch me" },
+      { time: 130.089, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A \u2014 7th"], text:  "no sir no way no" },
+      { time: 132.174, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "how (no how)" },
+      { time: 134.217, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "You can never catch me No sir no way no" },
+      { time: 140.381, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "how (no how)" },
+      { time: 142.522, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "Take all the time you need cos I" },
+      { time: 146.615, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "run so much faster" },
+      { time: 150.722, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "now" },
+      { time: 154.850, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A \u2014 7th"], text:  "You can never catch me" },
+      { time: 156.942, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "no sir no way no" },
+      { time: 158.999, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "how (no how)" },
+      { time: 165.149, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "You can never catch me No sir no way no" },
+      { time: 167.220, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "how (no how)" },
+      { time: 171.327, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "Take all the time you need cos I" },
+      { time: 175.442, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "run so much faster" },
+      { time: 179.618, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A \u2014 7th"], text:  "now" },
+      { time: 181.648, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "You can never catch me" },
+      { time: 183.705, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "no sir no way no" },
+      { time: 187.840, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A \u2014 7th"], text:  "how (no how)" },
+      { time: 189.883, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "You can never catch me No sir no way no" },
+      { time: 191.947, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "how (no how)" },
+      { time: 196.068, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A \u2014 7th"], text:  "Take all the time you need cos I" },
+      { time: 198.549, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G \u2014 7th"], text:  "run so much faster" },
+      { time: 201.370, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D \u2014 7th"], text:  "now" }
     ];
 
     // ── DOM ───────────────────────────────────────────────────────────
@@ -520,7 +520,7 @@
       root:    { fill: '#e94560', stroke: '#f87171', label: '1' },
       third:   { fill: '#22c55e', stroke: '#86efac', label: '3' },
       fifth:   { fill: '#2563eb', stroke: '#60a5fa', label: '5' },
-      seventh: { fill: '#eab308', stroke: '#fde047', label: '7' },
+      seventh: { fill: '#eab308', stroke: '#fde047', label: '♭7' },  // always b7 by convention
     };
 
     function parseChord(name) {
@@ -532,34 +532,81 @@
       return {
         name,
         rootSemitone:    root,
-        thirdSemitone:   (root + (isMinor ? 3 : 4))  % 12,
-        fifthSemitone:   (root + 7)                   % 12,
-        seventhSemitone: (root + (isMinor ? 10 : 11)) % 12,
+        thirdSemitone:   (root + (isMinor ? 3 : 4)) % 12,
+        fifthSemitone:   (root + 7)                  % 12,
+        seventhSemitone: (root + 10)                 % 12,  // b7 for both major and minor (convention: unqualified 7th = flat 7th)
         isMinor,
       };
     }
 
-    // ── Cowboy chord voicings (guitar, standard tuning) ───────────────
-    // Each entry: array of {s: stringIndex, fret, iv: interval}
-    // s=0=e(high), s=1=B, s=2=G, s=3=D, s=4=A, s=5=E(low)
-    // Muted strings are simply absent from the array (drawn as X).
-    const COWBOY_CHORDS_GUITAR = {
-      'C Major':  [{s:4,fret:3,iv:'root'},{s:3,fret:2,iv:'third'},{s:2,fret:0,iv:'fifth'},{s:1,fret:1,iv:'root'},{s:0,fret:0,iv:'third'}],
-      'D Major':  [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'root'},{s:0,fret:2,iv:'third'}],
-      'E Major':  [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:2,iv:'root'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
-      'F Major':  [{s:5,fret:1,iv:'root'},{s:4,fret:3,iv:'fifth'},{s:3,fret:3,iv:'root'},{s:2,fret:2,iv:'third'},{s:1,fret:1,iv:'fifth'},{s:0,fret:1,iv:'root'}],
-      'G Major':  [{s:5,fret:3,iv:'root'},{s:4,fret:2,iv:'third'},{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:3,iv:'root'}],
-      'A Major':  [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:2,iv:'third'},{s:0,fret:0,iv:'fifth'}],
-      'B Major':  [{s:4,fret:2,iv:'root'},{s:3,fret:4,iv:'fifth'},{s:2,fret:4,iv:'root'},{s:1,fret:4,iv:'third'},{s:0,fret:2,iv:'fifth'}],
-      'D Minor':  [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'root'},{s:0,fret:1,iv:'third'}],
-      'E Minor':  [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:2,iv:'root'},{s:2,fret:0,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
-      'A Minor':  [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:1,iv:'third'},{s:0,fret:0,iv:'fifth'}],
-      'B Minor':  [{s:4,fret:2,iv:'root'},{s:3,fret:4,iv:'fifth'},{s:2,fret:4,iv:'root'},{s:1,fret:3,iv:'third'},{s:0,fret:2,iv:'fifth'}],
-      'A7':       [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:0,iv:'seventh'},{s:1,fret:2,iv:'third'},{s:0,fret:0,iv:'fifth'}],
-      'B7':       [{s:4,fret:2,iv:'root'},{s:3,fret:1,iv:'third'},{s:2,fret:2,iv:'seventh'},{s:1,fret:0,iv:'root'},{s:0,fret:2,iv:'fifth'}],
-      'D7':       [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:1,iv:'seventh'},{s:0,fret:2,iv:'third'}],
-      'E7':       [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:0,iv:'seventh'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
-      'G7':       [{s:5,fret:3,iv:'root'},{s:4,fret:2,iv:'third'},{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:1,iv:'seventh'}],
+    // ── First-position chord voicings ─────────────────────────────────
+    // Keyed by instrument → chord name → [{s, fret, iv}]
+    // s = string index (0 = highest/thinnest in diagram, increases downward)
+    // Muted strings absent from array (shown as × in diagram).
+    //
+    // Guitar  s0=e(4) s1=B(11) s2=G(7) s3=D(2) s4=A(9) s5=E(4)
+    // Uke     s0=A(9) s1=E(4)  s2=C(0) s3=G(7)
+    // Mandolin s0=E(4) s1=A(9) s2=D(2) s3=G(7)
+    const COWBOY_CHORDS = {
+      guitar: {
+        'C Major':  [{s:4,fret:3,iv:'root'},{s:3,fret:2,iv:'third'},{s:2,fret:0,iv:'fifth'},{s:1,fret:1,iv:'root'},{s:0,fret:0,iv:'third'}],
+        'D Major':  [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'root'},{s:0,fret:2,iv:'third'}],
+        'E Major':  [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:2,iv:'root'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'F Major':  [{s:5,fret:1,iv:'root'},{s:4,fret:3,iv:'fifth'},{s:3,fret:3,iv:'root'},{s:2,fret:2,iv:'third'},{s:1,fret:1,iv:'fifth'},{s:0,fret:1,iv:'root'}],
+        'G Major':  [{s:5,fret:3,iv:'root'},{s:4,fret:2,iv:'third'},{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:3,iv:'root'}],
+        'A Major':  [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:2,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'B Major':  [{s:4,fret:2,iv:'root'},{s:3,fret:4,iv:'fifth'},{s:2,fret:4,iv:'root'},{s:1,fret:4,iv:'third'},{s:0,fret:2,iv:'fifth'}],
+        'D Minor':  [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'root'},{s:0,fret:1,iv:'third'}],
+        'E Minor':  [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:2,iv:'root'},{s:2,fret:0,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'A Minor':  [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:1,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'B Minor':  [{s:4,fret:2,iv:'root'},{s:3,fret:4,iv:'fifth'},{s:2,fret:4,iv:'root'},{s:1,fret:3,iv:'third'},{s:0,fret:2,iv:'fifth'}],
+        'C7':       [{s:4,fret:3,iv:'root'},{s:3,fret:2,iv:'third'},{s:2,fret:3,iv:'seventh'},{s:1,fret:1,iv:'root'},{s:0,fret:0,iv:'third'}],
+        'A7':       [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:0,iv:'seventh'},{s:1,fret:2,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'B7':       [{s:4,fret:2,iv:'root'},{s:3,fret:1,iv:'third'},{s:2,fret:2,iv:'seventh'},{s:1,fret:0,iv:'root'},{s:0,fret:2,iv:'fifth'}],
+        'D7':       [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:1,iv:'seventh'},{s:0,fret:2,iv:'third'}],
+        'E7':       [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:0,iv:'seventh'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'G7':       [{s:5,fret:3,iv:'root'},{s:4,fret:2,iv:'third'},{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:1,iv:'seventh'}],
+      },
+
+      // Ukulele GCEA  s0=A(9) s1=E(4) s2=C(0) s3=G(7)
+      ukulele: {
+        'C Major':  [{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:3,iv:'root'}],
+        'D Major':  [{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:2,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'E Major':  [{s:3,fret:1,iv:'third'},{s:2,fret:4,iv:'root'},{s:1,fret:0,iv:'root'},{s:0,fret:2,iv:'fifth'}],
+        'F Major':  [{s:3,fret:2,iv:'third'},{s:2,fret:0,iv:'fifth'},{s:1,fret:1,iv:'root'},{s:0,fret:0,iv:'third'}],
+        'G Major':  [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'root'},{s:0,fret:2,iv:'third'}],
+        'A Major':  [{s:3,fret:2,iv:'root'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'B Major':  [{s:3,fret:4,iv:'root'},{s:2,fret:3,iv:'third'},{s:1,fret:2,iv:'fifth'},{s:0,fret:2,iv:'root'}],
+        'D Minor':  [{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:1,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'E Minor':  [{s:3,fret:0,iv:'third'},{s:2,fret:4,iv:'root'},{s:1,fret:3,iv:'third'},{s:0,fret:2,iv:'fifth'}],
+        'A Minor':  [{s:3,fret:2,iv:'root'},{s:2,fret:0,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'B Minor':  [{s:3,fret:4,iv:'root'},{s:2,fret:2,iv:'third'},{s:1,fret:2,iv:'fifth'},{s:0,fret:2,iv:'root'}],
+        'C7':       [{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:1,iv:'seventh'}],
+        'D7':       [{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:2,iv:'third'},{s:0,fret:3,iv:'seventh'}],
+        'E7':       [{s:3,fret:1,iv:'third'},{s:2,fret:2,iv:'seventh'},{s:1,fret:0,iv:'root'},{s:0,fret:2,iv:'fifth'}],
+        'G7':       [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:1,iv:'seventh'},{s:0,fret:2,iv:'third'}],
+        'A7':       [{s:3,fret:0,iv:'seventh'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+      },
+
+      // Mandolin GDAE  s0=E(4) s1=A(9) s2=D(2) s3=G(7)
+      mandolin: {
+        'C Major':  [{s:3,fret:0,iv:'fifth'},{s:2,fret:2,iv:'third'},{s:1,fret:3,iv:'root'},{s:0,fret:0,iv:'third'}],
+        'D Major':  [{s:3,fret:2,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'fifth'},{s:0,fret:2,iv:'third'}],
+        'E Major':  [{s:3,fret:1,iv:'third'},{s:2,fret:2,iv:'root'},{s:1,fret:2,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'F Major':  [{s:3,fret:2,iv:'third'},{s:2,fret:3,iv:'root'},{s:1,fret:3,iv:'fifth'},{s:0,fret:1,iv:'root'}],
+        'G Major':  [{s:3,fret:0,iv:'root'},{s:2,fret:0,iv:'fifth'},{s:1,fret:2,iv:'third'},{s:0,fret:3,iv:'root'}],
+        'A Major':  [{s:3,fret:2,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:4,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'B Major':  [{s:3,fret:4,iv:'root'},{s:2,fret:1,iv:'third'},{s:1,fret:2,iv:'root'},{s:0,fret:2,iv:'fifth'}],
+        'D Minor':  [{s:3,fret:2,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'fifth'},{s:0,fret:1,iv:'third'}],
+        'E Minor':  [{s:3,fret:0,iv:'third'},{s:2,fret:2,iv:'root'},{s:1,fret:2,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'A Minor':  [{s:3,fret:2,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'B Minor':  [{s:3,fret:4,iv:'root'},{s:2,fret:0,iv:'third'},{s:1,fret:2,iv:'root'},{s:0,fret:2,iv:'fifth'}],
+        'C7':       [{s:3,fret:3,iv:'seventh'},{s:2,fret:2,iv:'third'},{s:1,fret:3,iv:'root'},{s:0,fret:3,iv:'fifth'}],
+        'D7':       [{s:3,fret:2,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:3,iv:'seventh'},{s:0,fret:2,iv:'third'}],
+        'E7':       [{s:3,fret:1,iv:'third'},{s:2,fret:0,iv:'seventh'},{s:1,fret:2,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'G7':       [{s:3,fret:0,iv:'root'},{s:2,fret:0,iv:'fifth'},{s:1,fret:2,iv:'third'},{s:0,fret:1,iv:'seventh'}],
+        'A7':       [{s:3,fret:0,iv:'seventh'},{s:2,fret:2,iv:'fifth'},{s:1,fret:4,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+      },
     };
 
     // Return fret positions (0 = open/capo) for a given semitone, instrument and capo
@@ -567,7 +614,7 @@
       return INSTRUMENTS[instr].strings.reduce((acc, open, sIdx) => {
         const effectiveOpen = (open + capoFret) % 12;
         const fret = (semitone - effectiveOpen + 12) % 12;
-        if (fret <= 4) acc.push({ s: sIdx, fret });
+        if (fret <= 5) acc.push({ s: sIdx, fret });
         return acc;
       }, []);
     }
@@ -642,11 +689,12 @@
 
       if (!parsed) { p.push('</svg>'); return p.join(''); }
 
-      // ── Cowboy chord mode (guitar) ─────────────────────────────────
+      // ── First-position chord mode ──────────────────────────────────
       let effectiveMode = mode;
       if (mode === 'chord') {
-        if (instr === 'guitar') {
-          const voicing = COWBOY_CHORDS_GUITAR[parsed.name];
+        const chordMap = COWBOY_CHORDS[instr];
+        if (chordMap) {
+          const voicing = chordMap[parsed.name];
           if (voicing) {
             // Mark muted strings with an X
             cfg.strings.forEach((_, sIdx) => {
@@ -659,8 +707,7 @@
             // Draw chord voicing dots (back-to-front so root appears on top)
             [...voicing].reverse().forEach(({s, fret, iv}) => {
               const style = { ...INTERVAL_STYLE[iv] };
-              if (iv === 'third'   && parsed.isMinor) style.label = '\u266d3';
-              if (iv === 'seventh' && parsed.isMinor) style.label = '\u266d7';
+              if (iv === 'third' && parsed.isMinor) style.label = '\u266d3';
               drawDot(fret, s, style);
             });
             p.push('</svg>');
@@ -684,8 +731,7 @@
         const st = semitones[interval];
         if (st === undefined) return;
         const style = { ...INTERVAL_STYLE[interval] };
-        if (interval === 'third'   && parsed.isMinor) style.label = '\u266d3';
-        if (interval === 'seventh' && parsed.isMinor) style.label = '\u266d7';
+        if (interval === 'third' && parsed.isMinor) style.label = '\u266d3';
         getPositions(st, instr, capoFret).forEach(({s, fret}) => drawDot(fret, s, style));
       });
 
@@ -698,15 +744,14 @@
       root:    'Root (1)',
       third:   'Third (3)',
       fifth:   'Fifth (5)',
-      seventh: 'Seventh (7)',
+      seventh: '\u266d7th',   // flat 7 by convention
     };
 
     function updateLegend(parsed, mode) {
       const intervals = activeIntervals(mode);
       legendEl.innerHTML = intervals.map(iv => {
         let label = LEGEND_LABELS[iv];
-        if (parsed?.isMinor && iv === 'third')   label = '\u266d3rd (minor)';
-        if (parsed?.isMinor && iv === 'seventh') label = '\u266d7th (minor)';
+        if (parsed?.isMinor && iv === 'third') label = '\u266d3rd (minor)';
         return `<span class="legend-item"><span class="legend-pip ${iv}"></span>${label}</span>`;
       }).join('');
     }

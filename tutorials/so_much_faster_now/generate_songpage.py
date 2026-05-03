@@ -33,14 +33,15 @@ OUTPUT_FILE = "song.html"
 # ──────────────────────────────────────────────────────────────────────────
 
 CHORD_LIBRARY = {
-    # ── Natural major chords (notes: Root, Major 3rd, 5th, Major 7th) ──
-    "C":   {"name": "C Major",  "notes": ["C — Root",  "E — Major 3rd",  "G — 5th",  "B — Major 7th"]},
-    "D":   {"name": "D Major",  "notes": ["D — Root",  "F# — Major 3rd", "A — 5th",  "C# — Major 7th"]},
-    "E":   {"name": "E Major",  "notes": ["E — Root",  "G# — Major 3rd", "B — 5th",  "D# — Major 7th"]},
-    "F":   {"name": "F Major",  "notes": ["F — Root",  "A — Major 3rd",  "C — 5th",  "E — Major 7th"]},
-    "G":   {"name": "G Major",  "notes": ["G — Root",  "B — Major 3rd",  "D — 5th",  "F# — Major 7th"]},
-    "A":   {"name": "A Major",  "notes": ["A — Root",  "C# — Major 3rd", "E — 5th",  "G# — Major 7th"]},
-    "B":   {"name": "B Major",  "notes": ["B — Root",  "D# — Major 3rd", "F# — 5th", "A# — Major 7th"]},
+    # ── Natural major chords (notes: Root, Major 3rd, 5th, b7th) ──────
+    # "7th" here follows the standard convention: unqualified seventh = flat/dominant 7th
+    "C":   {"name": "C Major",  "notes": ["C — Root",  "E — Major 3rd",  "G — 5th",  "Bb — 7th"]},
+    "D":   {"name": "D Major",  "notes": ["D — Root",  "F# — Major 3rd", "A — 5th",  "C — 7th"]},
+    "E":   {"name": "E Major",  "notes": ["E — Root",  "G# — Major 3rd", "B — 5th",  "D — 7th"]},
+    "F":   {"name": "F Major",  "notes": ["F — Root",  "A — Major 3rd",  "C — 5th",  "Eb — 7th"]},
+    "G":   {"name": "G Major",  "notes": ["G — Root",  "B — Major 3rd",  "D — 5th",  "F — 7th"]},
+    "A":   {"name": "A Major",  "notes": ["A — Root",  "C# — Major 3rd", "E — 5th",  "G — 7th"]},
+    "B":   {"name": "B Major",  "notes": ["B — Root",  "D# — Major 3rd", "F# — 5th", "A — 7th"]},
     # ── Natural minor chords (notes: Root, Minor 3rd, 5th, Minor 7th) ──
     "Cm":  {"name": "C Minor",  "notes": ["C — Root",  "Eb — Minor 3rd", "G — 5th",  "Bb — Minor 7th"]},
     "Dm":  {"name": "D Minor",  "notes": ["D — Root",  "F — Minor 3rd",  "A — 5th",  "C — Minor 7th"]},
@@ -50,16 +51,16 @@ CHORD_LIBRARY = {
     "Am":  {"name": "A Minor",  "notes": ["A — Root",  "C — Minor 3rd",  "E — 5th",  "G — Minor 7th"]},
     "Bm":  {"name": "B Minor",  "notes": ["B — Root",  "D — Minor 3rd",  "F# — 5th", "A — Minor 7th"]},
     # ── Sharps / Flats major ──────────────────────────────────────────
-    "C#":  {"name": "C# Major", "notes": ["C# — Root", "F — Major 3rd",  "G# — 5th", "C — Major 7th"]},
-    "Db":  {"name": "Db Major", "notes": ["Db — Root", "F — Major 3rd",  "Ab — 5th", "C — Major 7th"]},
-    "D#":  {"name": "D# Major", "notes": ["D# — Root", "G — Major 3rd",  "A# — 5th", "D — Major 7th"]},
-    "Eb":  {"name": "Eb Major", "notes": ["Eb — Root", "G — Major 3rd",  "Bb — 5th", "D — Major 7th"]},
-    "F#":  {"name": "F# Major", "notes": ["F# — Root", "A# — Major 3rd", "C# — 5th", "F — Major 7th"]},
-    "Gb":  {"name": "Gb Major", "notes": ["Gb — Root", "Bb — Major 3rd", "Db — 5th", "F — Major 7th"]},
-    "G#":  {"name": "G# Major", "notes": ["G# — Root", "C — Major 3rd",  "D# — 5th", "G — Major 7th"]},
-    "Ab":  {"name": "Ab Major", "notes": ["Ab — Root", "C — Major 3rd",  "Eb — 5th", "G — Major 7th"]},
-    "A#":  {"name": "A# Major", "notes": ["A# — Root", "D — Major 3rd",  "F — 5th",  "A — Major 7th"]},
-    "Bb":  {"name": "Bb Major", "notes": ["Bb — Root", "D — Major 3rd",  "F — 5th",  "A — Major 7th"]},
+    "C#":  {"name": "C# Major", "notes": ["C# — Root", "F — Major 3rd",  "G# — 5th", "B — 7th"]},
+    "Db":  {"name": "Db Major", "notes": ["Db — Root", "F — Major 3rd",  "Ab — 5th", "B — 7th"]},
+    "D#":  {"name": "D# Major", "notes": ["D# — Root", "G — Major 3rd",  "A# — 5th", "C# — 7th"]},
+    "Eb":  {"name": "Eb Major", "notes": ["Eb — Root", "G — Major 3rd",  "Bb — 5th", "Db — 7th"]},
+    "F#":  {"name": "F# Major", "notes": ["F# — Root", "A# — Major 3rd", "C# — 5th", "E — 7th"]},
+    "Gb":  {"name": "Gb Major", "notes": ["Gb — Root", "Bb — Major 3rd", "Db — 5th", "E — 7th"]},
+    "G#":  {"name": "G# Major", "notes": ["G# — Root", "C — Major 3rd",  "D# — 5th", "F# — 7th"]},
+    "Ab":  {"name": "Ab Major", "notes": ["Ab — Root", "C — Major 3rd",  "Eb — 5th", "Gb — 7th"]},
+    "A#":  {"name": "A# Major", "notes": ["A# — Root", "D — Major 3rd",  "F — 5th",  "G# — 7th"]},
+    "Bb":  {"name": "Bb Major", "notes": ["Bb — Root", "D — Major 3rd",  "F — 5th",  "Ab — 7th"]},
     # ── Sharp/flat minor chords ───────────────────────────────────────
     "C#m": {"name": "C# Minor", "notes": ["C# — Root", "E — Minor 3rd",  "G# — 5th", "B — Minor 7th"]},
     "Ebm": {"name": "Eb Minor", "notes": ["Eb — Root", "Gb — Minor 3rd", "Bb — 5th", "Db — Minor 7th"]},
@@ -627,7 +628,7 @@ HTML_TEMPLATE = """\
       root:    { fill: '#e94560', stroke: '#f87171', label: '1' },
       third:   { fill: '#22c55e', stroke: '#86efac', label: '3' },
       fifth:   { fill: '#2563eb', stroke: '#60a5fa', label: '5' },
-      seventh: { fill: '#eab308', stroke: '#fde047', label: '7' },
+      seventh: { fill: '#eab308', stroke: '#fde047', label: '♭7' },  // always b7 by convention
     };
 
     function parseChord(name) {
@@ -639,34 +640,81 @@ HTML_TEMPLATE = """\
       return {
         name,
         rootSemitone:    root,
-        thirdSemitone:   (root + (isMinor ? 3 : 4))  % 12,
-        fifthSemitone:   (root + 7)                   % 12,
-        seventhSemitone: (root + (isMinor ? 10 : 11)) % 12,
+        thirdSemitone:   (root + (isMinor ? 3 : 4)) % 12,
+        fifthSemitone:   (root + 7)                  % 12,
+        seventhSemitone: (root + 10)                 % 12,  // b7 for both major and minor (convention: unqualified 7th = flat 7th)
         isMinor,
       };
     }
 
-    // ── Cowboy chord voicings (guitar, standard tuning) ───────────────
-    // Each entry: array of {s: stringIndex, fret, iv: interval}
-    // s=0=e(high), s=1=B, s=2=G, s=3=D, s=4=A, s=5=E(low)
-    // Muted strings are simply absent from the array (drawn as X).
-    const COWBOY_CHORDS_GUITAR = {
-      'C Major':  [{s:4,fret:3,iv:'root'},{s:3,fret:2,iv:'third'},{s:2,fret:0,iv:'fifth'},{s:1,fret:1,iv:'root'},{s:0,fret:0,iv:'third'}],
-      'D Major':  [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'root'},{s:0,fret:2,iv:'third'}],
-      'E Major':  [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:2,iv:'root'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
-      'F Major':  [{s:5,fret:1,iv:'root'},{s:4,fret:3,iv:'fifth'},{s:3,fret:3,iv:'root'},{s:2,fret:2,iv:'third'},{s:1,fret:1,iv:'fifth'},{s:0,fret:1,iv:'root'}],
-      'G Major':  [{s:5,fret:3,iv:'root'},{s:4,fret:2,iv:'third'},{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:3,iv:'root'}],
-      'A Major':  [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:2,iv:'third'},{s:0,fret:0,iv:'fifth'}],
-      'B Major':  [{s:4,fret:2,iv:'root'},{s:3,fret:4,iv:'fifth'},{s:2,fret:4,iv:'root'},{s:1,fret:4,iv:'third'},{s:0,fret:2,iv:'fifth'}],
-      'D Minor':  [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'root'},{s:0,fret:1,iv:'third'}],
-      'E Minor':  [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:2,iv:'root'},{s:2,fret:0,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
-      'A Minor':  [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:1,iv:'third'},{s:0,fret:0,iv:'fifth'}],
-      'B Minor':  [{s:4,fret:2,iv:'root'},{s:3,fret:4,iv:'fifth'},{s:2,fret:4,iv:'root'},{s:1,fret:3,iv:'third'},{s:0,fret:2,iv:'fifth'}],
-      'A7':       [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:0,iv:'seventh'},{s:1,fret:2,iv:'third'},{s:0,fret:0,iv:'fifth'}],
-      'B7':       [{s:4,fret:2,iv:'root'},{s:3,fret:1,iv:'third'},{s:2,fret:2,iv:'seventh'},{s:1,fret:0,iv:'root'},{s:0,fret:2,iv:'fifth'}],
-      'D7':       [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:1,iv:'seventh'},{s:0,fret:2,iv:'third'}],
-      'E7':       [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:0,iv:'seventh'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
-      'G7':       [{s:5,fret:3,iv:'root'},{s:4,fret:2,iv:'third'},{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:1,iv:'seventh'}],
+    // ── First-position chord voicings ─────────────────────────────────
+    // Keyed by instrument → chord name → [{s, fret, iv}]
+    // s = string index (0 = highest/thinnest in diagram, increases downward)
+    // Muted strings absent from array (shown as × in diagram).
+    //
+    // Guitar  s0=e(4) s1=B(11) s2=G(7) s3=D(2) s4=A(9) s5=E(4)
+    // Uke     s0=A(9) s1=E(4)  s2=C(0) s3=G(7)
+    // Mandolin s0=E(4) s1=A(9) s2=D(2) s3=G(7)
+    const COWBOY_CHORDS = {
+      guitar: {
+        'C Major':  [{s:4,fret:3,iv:'root'},{s:3,fret:2,iv:'third'},{s:2,fret:0,iv:'fifth'},{s:1,fret:1,iv:'root'},{s:0,fret:0,iv:'third'}],
+        'D Major':  [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'root'},{s:0,fret:2,iv:'third'}],
+        'E Major':  [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:2,iv:'root'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'F Major':  [{s:5,fret:1,iv:'root'},{s:4,fret:3,iv:'fifth'},{s:3,fret:3,iv:'root'},{s:2,fret:2,iv:'third'},{s:1,fret:1,iv:'fifth'},{s:0,fret:1,iv:'root'}],
+        'G Major':  [{s:5,fret:3,iv:'root'},{s:4,fret:2,iv:'third'},{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:3,iv:'root'}],
+        'A Major':  [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:2,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'B Major':  [{s:4,fret:2,iv:'root'},{s:3,fret:4,iv:'fifth'},{s:2,fret:4,iv:'root'},{s:1,fret:4,iv:'third'},{s:0,fret:2,iv:'fifth'}],
+        'D Minor':  [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'root'},{s:0,fret:1,iv:'third'}],
+        'E Minor':  [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:2,iv:'root'},{s:2,fret:0,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'A Minor':  [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:1,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'B Minor':  [{s:4,fret:2,iv:'root'},{s:3,fret:4,iv:'fifth'},{s:2,fret:4,iv:'root'},{s:1,fret:3,iv:'third'},{s:0,fret:2,iv:'fifth'}],
+        'C7':       [{s:4,fret:3,iv:'root'},{s:3,fret:2,iv:'third'},{s:2,fret:3,iv:'seventh'},{s:1,fret:1,iv:'root'},{s:0,fret:0,iv:'third'}],
+        'A7':       [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:0,iv:'seventh'},{s:1,fret:2,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'B7':       [{s:4,fret:2,iv:'root'},{s:3,fret:1,iv:'third'},{s:2,fret:2,iv:'seventh'},{s:1,fret:0,iv:'root'},{s:0,fret:2,iv:'fifth'}],
+        'D7':       [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:1,iv:'seventh'},{s:0,fret:2,iv:'third'}],
+        'E7':       [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:0,iv:'seventh'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'G7':       [{s:5,fret:3,iv:'root'},{s:4,fret:2,iv:'third'},{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:1,iv:'seventh'}],
+      },
+
+      // Ukulele GCEA  s0=A(9) s1=E(4) s2=C(0) s3=G(7)
+      ukulele: {
+        'C Major':  [{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:3,iv:'root'}],
+        'D Major':  [{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:2,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'E Major':  [{s:3,fret:1,iv:'third'},{s:2,fret:4,iv:'root'},{s:1,fret:0,iv:'root'},{s:0,fret:2,iv:'fifth'}],
+        'F Major':  [{s:3,fret:2,iv:'third'},{s:2,fret:0,iv:'fifth'},{s:1,fret:1,iv:'root'},{s:0,fret:0,iv:'third'}],
+        'G Major':  [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'root'},{s:0,fret:2,iv:'third'}],
+        'A Major':  [{s:3,fret:2,iv:'root'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'B Major':  [{s:3,fret:4,iv:'root'},{s:2,fret:3,iv:'third'},{s:1,fret:2,iv:'fifth'},{s:0,fret:2,iv:'root'}],
+        'D Minor':  [{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:1,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'E Minor':  [{s:3,fret:0,iv:'third'},{s:2,fret:4,iv:'root'},{s:1,fret:3,iv:'third'},{s:0,fret:2,iv:'fifth'}],
+        'A Minor':  [{s:3,fret:2,iv:'root'},{s:2,fret:0,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'B Minor':  [{s:3,fret:4,iv:'root'},{s:2,fret:2,iv:'third'},{s:1,fret:2,iv:'fifth'},{s:0,fret:2,iv:'root'}],
+        'C7':       [{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:1,iv:'seventh'}],
+        'D7':       [{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:2,iv:'third'},{s:0,fret:3,iv:'seventh'}],
+        'E7':       [{s:3,fret:1,iv:'third'},{s:2,fret:2,iv:'seventh'},{s:1,fret:0,iv:'root'},{s:0,fret:2,iv:'fifth'}],
+        'G7':       [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:1,iv:'seventh'},{s:0,fret:2,iv:'third'}],
+        'A7':       [{s:3,fret:0,iv:'seventh'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+      },
+
+      // Mandolin GDAE  s0=E(4) s1=A(9) s2=D(2) s3=G(7)
+      mandolin: {
+        'C Major':  [{s:3,fret:0,iv:'fifth'},{s:2,fret:2,iv:'third'},{s:1,fret:3,iv:'root'},{s:0,fret:0,iv:'third'}],
+        'D Major':  [{s:3,fret:2,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'fifth'},{s:0,fret:2,iv:'third'}],
+        'E Major':  [{s:3,fret:1,iv:'third'},{s:2,fret:2,iv:'root'},{s:1,fret:2,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'F Major':  [{s:3,fret:2,iv:'third'},{s:2,fret:3,iv:'root'},{s:1,fret:3,iv:'fifth'},{s:0,fret:1,iv:'root'}],
+        'G Major':  [{s:3,fret:0,iv:'root'},{s:2,fret:0,iv:'fifth'},{s:1,fret:2,iv:'third'},{s:0,fret:3,iv:'root'}],
+        'A Major':  [{s:3,fret:2,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:4,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'B Major':  [{s:3,fret:4,iv:'root'},{s:2,fret:1,iv:'third'},{s:1,fret:2,iv:'root'},{s:0,fret:2,iv:'fifth'}],
+        'D Minor':  [{s:3,fret:2,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'fifth'},{s:0,fret:1,iv:'third'}],
+        'E Minor':  [{s:3,fret:0,iv:'third'},{s:2,fret:2,iv:'root'},{s:1,fret:2,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'A Minor':  [{s:3,fret:2,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+        'B Minor':  [{s:3,fret:4,iv:'root'},{s:2,fret:0,iv:'third'},{s:1,fret:2,iv:'root'},{s:0,fret:2,iv:'fifth'}],
+        'C7':       [{s:3,fret:3,iv:'seventh'},{s:2,fret:2,iv:'third'},{s:1,fret:3,iv:'root'},{s:0,fret:3,iv:'fifth'}],
+        'D7':       [{s:3,fret:2,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:3,iv:'seventh'},{s:0,fret:2,iv:'third'}],
+        'E7':       [{s:3,fret:1,iv:'third'},{s:2,fret:0,iv:'seventh'},{s:1,fret:2,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+        'G7':       [{s:3,fret:0,iv:'root'},{s:2,fret:0,iv:'fifth'},{s:1,fret:2,iv:'third'},{s:0,fret:1,iv:'seventh'}],
+        'A7':       [{s:3,fret:0,iv:'seventh'},{s:2,fret:2,iv:'fifth'},{s:1,fret:4,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+      },
     };
 
     // Return fret positions (0 = open/capo) for a given semitone, instrument and capo
@@ -674,7 +722,7 @@ HTML_TEMPLATE = """\
       return INSTRUMENTS[instr].strings.reduce((acc, open, sIdx) => {
         const effectiveOpen = (open + capoFret) % 12;
         const fret = (semitone - effectiveOpen + 12) % 12;
-        if (fret <= 4) acc.push({ s: sIdx, fret });
+        if (fret <= 5) acc.push({ s: sIdx, fret });
         return acc;
       }, []);
     }
@@ -749,11 +797,12 @@ HTML_TEMPLATE = """\
 
       if (!parsed) { p.push('</svg>'); return p.join(''); }
 
-      // ── Cowboy chord mode (guitar) ─────────────────────────────────
+      // ── First-position chord mode ──────────────────────────────────
       let effectiveMode = mode;
       if (mode === 'chord') {
-        if (instr === 'guitar') {
-          const voicing = COWBOY_CHORDS_GUITAR[parsed.name];
+        const chordMap = COWBOY_CHORDS[instr];
+        if (chordMap) {
+          const voicing = chordMap[parsed.name];
           if (voicing) {
             // Mark muted strings with an X
             cfg.strings.forEach((_, sIdx) => {
@@ -766,8 +815,7 @@ HTML_TEMPLATE = """\
             // Draw chord voicing dots (back-to-front so root appears on top)
             [...voicing].reverse().forEach(({s, fret, iv}) => {
               const style = { ...INTERVAL_STYLE[iv] };
-              if (iv === 'third'   && parsed.isMinor) style.label = '\\u266d3';
-              if (iv === 'seventh' && parsed.isMinor) style.label = '\\u266d7';
+              if (iv === 'third' && parsed.isMinor) style.label = '\\u266d3';
               drawDot(fret, s, style);
             });
             p.push('</svg>');
@@ -791,8 +839,7 @@ HTML_TEMPLATE = """\
         const st = semitones[interval];
         if (st === undefined) return;
         const style = { ...INTERVAL_STYLE[interval] };
-        if (interval === 'third'   && parsed.isMinor) style.label = '\\u266d3';
-        if (interval === 'seventh' && parsed.isMinor) style.label = '\\u266d7';
+        if (interval === 'third' && parsed.isMinor) style.label = '\\u266d3';
         getPositions(st, instr, capoFret).forEach(({s, fret}) => drawDot(fret, s, style));
       });
 
@@ -805,15 +852,14 @@ HTML_TEMPLATE = """\
       root:    'Root (1)',
       third:   'Third (3)',
       fifth:   'Fifth (5)',
-      seventh: 'Seventh (7)',
+      seventh: '\\u266d7th',   // flat 7 by convention
     };
 
     function updateLegend(parsed, mode) {
       const intervals = activeIntervals(mode);
       legendEl.innerHTML = intervals.map(iv => {
         let label = LEGEND_LABELS[iv];
-        if (parsed?.isMinor && iv === 'third')   label = '\\u266d3rd (minor)';
-        if (parsed?.isMinor && iv === 'seventh') label = '\\u266d7th (minor)';
+        if (parsed?.isMinor && iv === 'third') label = '\\u266d3rd (minor)';
         return `<span class="legend-item"><span class="legend-pip ${iv}"></span>${label}</span>`;
       }).join('');
     }
