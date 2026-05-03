@@ -391,6 +391,7 @@ HTML_TEMPLATE = """\
         <option value="root-fifth">Root / Fifth</option>
         <option value="root-third-fifth">Root / Third / Fifth</option>
         <option value="root-third-fifth-seventh">Root / Third / Fifth / Seventh</option>
+        <option value="chord">Chord</option>
       </select>
     </div>
     <div class="ctrl-row">
@@ -547,6 +548,7 @@ HTML_TEMPLATE = """\
         case 'root':                   return [notes[0]];
         case 'root-fifth':             return [notes[0], notes[2]];
         case 'root-third-fifth':       return [notes[0], notes[1], notes[2]];
+        case 'chord':                  return [notes[0], notes[1], notes[2]];
         default:                       return notes;   // all four
       }
     }
@@ -635,6 +637,7 @@ HTML_TEMPLATE = """\
       if (root === undefined) return null;
       const isMinor = m[2] && m[2].toLowerCase() === 'minor';
       return {
+        name,
         rootSemitone:    root,
         thirdSemitone:   (root + (isMinor ? 3 : 4))  % 12,
         fifthSemitone:   (root + 7)                   % 12,
@@ -642,6 +645,29 @@ HTML_TEMPLATE = """\
         isMinor,
       };
     }
+
+    // ── Cowboy chord voicings (guitar, standard tuning) ───────────────
+    // Each entry: array of {s: stringIndex, fret, iv: interval}
+    // s=0=e(high), s=1=B, s=2=G, s=3=D, s=4=A, s=5=E(low)
+    // Muted strings are simply absent from the array (drawn as X).
+    const COWBOY_CHORDS_GUITAR = {
+      'C Major':  [{s:4,fret:3,iv:'root'},{s:3,fret:2,iv:'third'},{s:2,fret:0,iv:'fifth'},{s:1,fret:1,iv:'root'},{s:0,fret:0,iv:'third'}],
+      'D Major':  [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'root'},{s:0,fret:2,iv:'third'}],
+      'E Major':  [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:2,iv:'root'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+      'F Major':  [{s:5,fret:1,iv:'root'},{s:4,fret:3,iv:'fifth'},{s:3,fret:3,iv:'root'},{s:2,fret:2,iv:'third'},{s:1,fret:1,iv:'fifth'},{s:0,fret:1,iv:'root'}],
+      'G Major':  [{s:5,fret:3,iv:'root'},{s:4,fret:2,iv:'third'},{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:3,iv:'root'}],
+      'A Major':  [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:2,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+      'B Major':  [{s:4,fret:2,iv:'root'},{s:3,fret:4,iv:'fifth'},{s:2,fret:4,iv:'root'},{s:1,fret:4,iv:'third'},{s:0,fret:2,iv:'fifth'}],
+      'D Minor':  [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:3,iv:'root'},{s:0,fret:1,iv:'third'}],
+      'E Minor':  [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:2,iv:'root'},{s:2,fret:0,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+      'A Minor':  [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:2,iv:'root'},{s:1,fret:1,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+      'B Minor':  [{s:4,fret:2,iv:'root'},{s:3,fret:4,iv:'fifth'},{s:2,fret:4,iv:'root'},{s:1,fret:3,iv:'third'},{s:0,fret:2,iv:'fifth'}],
+      'A7':       [{s:4,fret:0,iv:'root'},{s:3,fret:2,iv:'fifth'},{s:2,fret:0,iv:'seventh'},{s:1,fret:2,iv:'third'},{s:0,fret:0,iv:'fifth'}],
+      'B7':       [{s:4,fret:2,iv:'root'},{s:3,fret:1,iv:'third'},{s:2,fret:2,iv:'seventh'},{s:1,fret:0,iv:'root'},{s:0,fret:2,iv:'fifth'}],
+      'D7':       [{s:3,fret:0,iv:'root'},{s:2,fret:2,iv:'fifth'},{s:1,fret:1,iv:'seventh'},{s:0,fret:2,iv:'third'}],
+      'E7':       [{s:5,fret:0,iv:'root'},{s:4,fret:2,iv:'fifth'},{s:3,fret:0,iv:'seventh'},{s:2,fret:1,iv:'third'},{s:1,fret:0,iv:'fifth'},{s:0,fret:0,iv:'root'}],
+      'G7':       [{s:5,fret:3,iv:'root'},{s:4,fret:2,iv:'third'},{s:3,fret:0,iv:'fifth'},{s:2,fret:0,iv:'root'},{s:1,fret:0,iv:'third'},{s:0,fret:1,iv:'seventh'}],
+    };
 
     // Return fret positions (0 = open/capo) for a given semitone, instrument and capo
     function getPositions(semitone, instr, capoFret) {
@@ -659,6 +685,7 @@ HTML_TEMPLATE = """\
         case 'root':                   return ['root'];
         case 'root-fifth':             return ['root', 'fifth'];
         case 'root-third-fifth':       return ['root', 'third', 'fifth'];
+        case 'chord':                  return ['root', 'third', 'fifth'];
         default:                       return ['root', 'third', 'fifth', 'seventh'];
       }
     }
@@ -666,8 +693,8 @@ HTML_TEMPLATE = """\
     function buildFretboardSVG(parsed, mode, instr, capoFret) {
       const cfg      = INSTRUMENTS[instr];
       const nStrings = cfg.strings.length;
-      const W        = 256;
-      const nutX     = 24, nutW = 4, fretW = 40, nFrets = 4, topPad = 18, dotR = 8;
+      const W        = 280;
+      const nutX     = 24, nutW = 4, fretW = 40, nFrets = 5, topPad = 18, dotR = 8;
       const strGap   = nStrings > 4 ? 13 : 16;
       const H        = topPad + (nStrings - 1) * strGap + 14;
       const openX    = nutX - 13;
@@ -722,6 +749,35 @@ HTML_TEMPLATE = """\
 
       if (!parsed) { p.push('</svg>'); return p.join(''); }
 
+      // ── Cowboy chord mode (guitar) ─────────────────────────────────
+      let effectiveMode = mode;
+      if (mode === 'chord') {
+        if (instr === 'guitar') {
+          const voicing = COWBOY_CHORDS_GUITAR[parsed.name];
+          if (voicing) {
+            // Mark muted strings with an X
+            cfg.strings.forEach((_, sIdx) => {
+              if (!voicing.some(v => v.s === sIdx)) {
+                const y = strY[sIdx];
+                p.push(`<line x1="${openX-4}" y1="${y-4}" x2="${openX+4}" y2="${y+4}" stroke="#5a6480" stroke-width="1.5"/>`);
+                p.push(`<line x1="${openX+4}" y1="${y-4}" x2="${openX-4}" y2="${y+4}" stroke="#5a6480" stroke-width="1.5"/>`);
+              }
+            });
+            // Draw chord voicing dots (back-to-front so root appears on top)
+            [...voicing].reverse().forEach(({s, fret, iv}) => {
+              const style = { ...INTERVAL_STYLE[iv] };
+              if (iv === 'third'   && parsed.isMinor) style.label = '\\u266d3';
+              if (iv === 'seventh' && parsed.isMinor) style.label = '\\u266d7';
+              drawDot(fret, s, style);
+            });
+            p.push('</svg>');
+            return p.join('');
+          }
+        }
+        // Non-guitar or unknown chord: fall back to root-third-fifth intervals
+        effectiveMode = 'root-third-fifth';
+      }
+
       const semitones = {
         root:    parsed.rootSemitone,
         third:   parsed.thirdSemitone,
@@ -730,7 +786,7 @@ HTML_TEMPLATE = """\
       };
 
       // Draw back-to-front so root appears on top
-      const intervals = activeIntervals(mode);
+      const intervals = activeIntervals(effectiveMode);
       [...intervals].reverse().forEach(interval => {
         const st = semitones[interval];
         if (st === undefined) return;
