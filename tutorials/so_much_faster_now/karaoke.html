@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>So Much Faster Now — Karaoke</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0d0d16;
+      --surface:    #1a1a2e;
+      --surface2:   #16213e;
+      --border:     #243358;
+      --accent:     #e94560;
+      --accent-dim: rgba(233, 69, 96, 0.18);
+      --text:       #f0f0f5;
+      --muted:      #5a6480;
+      --radius:     14px;
+      --font:       'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+      gap: 1.5rem;
+    }
+
+    /* ── Header ── */
+    header { text-align: center; }
+    .lj-logo {
+      width: 180px; height: auto;
+      display: block; margin: 0 auto 0.8rem;
+      filter: drop-shadow(0 2px 12px rgba(233,69,96,0.15));
+    }
+    header h1 {
+      font-size: 1.05rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--accent); font-weight: 700;
+    }
+    header p {
+      font-size: 0.78rem; color: var(--muted);
+      margin-top: 0.25rem; letter-spacing: 0.08em;
+    }
+
+    /* ── Player card ── */
+    .player-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem 1.75rem;
+      width: 100%; max-width: 700px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    audio { width: 100%; accent-color: var(--accent); }
+
+    /* Speed buttons */
+    .speed-row {
+      display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .speed-label {
+      font-size: 0.7rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-right: 0.2rem;
+    }
+    .speed-btn {
+      background: var(--surface2); color: var(--muted);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.35rem 0.9rem; font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; transition: background .15s, color .15s, border-color .15s;
+    }
+    .speed-btn:hover { background: var(--accent-dim); color: var(--text); }
+    .speed-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    /* ── Lyrics scroll area ── */
+    .lyrics-outer {
+      width: 100%; max-width: 700px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem 1.75rem;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    }
+
+    #lyrics-scroll {
+      /* Fixed-height scrollable window; JS scrolls it */
+      max-height: 60vh;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      /* Hide scrollbar on most browsers for cleanliness */
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    #lyrics-scroll::-webkit-scrollbar { width: 4px; }
+    #lyrics-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    /* ── Individual chord segment ── */
+    .seg {
+      display: flex;
+      align-items: baseline;
+      gap: 0.9rem;
+      padding: 0.65rem 0.5rem;
+      border-radius: 8px;
+      transition: background 0.2s, box-shadow 0.2s;
+      margin-bottom: 0.15rem;
+    }
+    .seg-chord {
+      min-width: 3.2rem;
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--muted);
+      letter-spacing: -0.01em;
+      flex-shrink: 0;
+      transition: color 0.2s;
+      text-align: right;
+    }
+    .seg-text {
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    /* Active segment */
+    .seg.active {
+      background: var(--accent-dim);
+      box-shadow: inset 3px 0 0 var(--accent);
+    }
+    .seg.active .seg-chord {
+      color: var(--accent);
+      text-shadow: 0 0 20px rgba(233,69,96,0.6);
+    }
+    .seg.active .seg-text {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Upcoming segment — slightly lighter than idle */
+    .seg.upcoming {
+      opacity: 0.65;
+    }
+    .seg.upcoming .seg-chord { color: #3a4868; }
+    .seg.upcoming .seg-text  { color: #3a4868; }
+
+    /* Past segments */
+    .seg.past .seg-chord { color: #2a3248; }
+    .seg.past .seg-text  { color: #2a3248; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="https://letsjam.org" target="_blank" rel="noopener">
+      <img src="https://letsjam.org/assets/images/lets_jam_logo_347x141.png"
+           alt="Let's Jam" class="lj-logo" />
+    </a>
+    <h1>So Much Faster Now</h1>
+    <p>Karaoke — Bass Playalong</p>
+  </header>
+
+  <div class="player-card">
+    <audio id="player" controls src="assets/song.mp3"></audio>
+    <div class="speed-row">
+      <span class="speed-label">Speed</span>
+      <button class="speed-btn" data-speed="0.5">0.5×</button>
+      <button class="speed-btn" data-speed="0.75">0.75×</button>
+      <button class="speed-btn active" data-speed="1.0">1.0×</button>
+    </div>
+  </div>
+
+  <div class="lyrics-outer">
+    <div id="lyrics-scroll">
+      <!-- Segments injected by JS -->
+    </div>
+  </div>
+
+  <script>
+    // ── Song data (generated by generate_karaoke.py) ──────────────────
+    const songData = [
+      { time: 0.000, chord: "E", text: "You can never catch me" },
+      { time: 15.213, chord: "A", text: "no sir no way no" },
+      { time: 17.423, chord: "E", text: "how (no how)" },
+      { time: 21.683, chord: "A", text: "You can never catch me No sir no way no" },
+      { time: 25.959, chord: "E", text: "how (no how)" },
+      { time: 30.293, chord: "B", text: "Take all the time you need cos I" },
+      { time: 32.355, chord: "A", text: "run so much faster" },
+      { time: 34.491, chord: "E", text: "now" },
+      { time: 40.815, chord: "E", text: "The same old confusions well" },
+      { time: 42.900, chord: "A", text: "they don\u2019t bother me" },
+      { time: 47.069, chord: "E", text: "no more (No more)" },
+      { time: 51.239, chord: "A", text: "The same old confusions they just don\u2019t" },
+      { time: 55.451, chord: "E", text: "bother me no more (No more)" },
+      { time: 57.508, chord: "B", text: "I know all your" },
+      { time: 59.599, chord: "A", text: "lies because I\u2019ve heard" },
+      { time: 65.812, chord: "E", text: "them all before" },
+      { time: 67.897, chord: "E", text: "You can never catch me" },
+      { time: 72.053, chord: "A", text: "no sir no way no" },
+      { time: 76.223, chord: "E", text: "how (no how)" },
+      { time: 80.372, chord: "A", text: "You can never catch me No sir no way no" },
+      { time: 82.429, chord: "E", text: "how (no how)" },
+      { time: 84.521, chord: "B", text: "Take all the time you need cos I" },
+      { time: 90.713, chord: "A", text: "run so much faster" },
+      { time: 92.797, chord: "E", text: "now" },
+      { time: 96.988, chord: "E", text: "May the dust in your" },
+      { time: 101.116, chord: "A", text: "mouth forever remind you" },
+      { time: 105.258, chord: "E", text: "of me (of me)" },
+      { time: 107.329, chord: "A", text: "May the dust in your mouth forever" },
+      { time: 109.393, chord: "E", text: "remind you of me (of me)" },
+      { time: 115.627, chord: "B", text: "Just over your horizon" },
+      { time: 117.684, chord: "A", text: "that\u2019s that's where I'll" },
+      { time: 121.826, chord: "E", text: "be running free" },
+      { time: 125.975, chord: "E", text: "You can never catch me" },
+      { time: 130.089, chord: "A", text: "no sir no way no" },
+      { time: 132.174, chord: "E", text: "how (no how)" },
+      { time: 134.217, chord: "A", text: "You can never catch me No sir no way no" },
+      { time: 140.381, chord: "E", text: "how (no how)" },
+      { time: 142.522, chord: "B", text: "Take all the time you need cos I" },
+      { time: 146.615, chord: "A", text: "run so much faster" },
+      { time: 150.722, chord: "E", text: "now" },
+      { time: 154.850, chord: "E", text: "You can never catch me" },
+      { time: 156.942, chord: "A", text: "no sir no way no" },
+      { time: 158.999, chord: "E", text: "how (no how)" },
+      { time: 165.149, chord: "A", text: "You can never catch me No sir no way no" },
+      { time: 167.220, chord: "E", text: "how (no how)" },
+      { time: 171.327, chord: "B", text: "Take all the time you need cos I" },
+      { time: 175.442, chord: "A", text: "run so much faster" },
+      { time: 179.618, chord: "E", text: "now" },
+      { time: 181.648, chord: "E", text: "You can never catch me" },
+      { time: 183.705, chord: "A", text: "no sir no way no" },
+      { time: 187.840, chord: "E", text: "how (no how)" },
+      { time: 189.883, chord: "A", text: "You can never catch me No sir no way no" },
+      { time: 191.947, chord: "E", text: "how (no how)" },
+      { time: 196.068, chord: "B", text: "Take all the time you need cos I" },
+      { time: 198.549, chord: "A", text: "run so much faster" },
+      { time: 201.370, chord: "E", text: "now" }
+    ];
+
+    // ── DOM ──────────────────────────────────────────────────────────
+    const audio      = document.getElementById('player');
+    const lyricsEl   = document.getElementById('lyrics-scroll');
+
+    // ── Build DOM from song data ──────────────────────────────────────
+    const segEls = songData.map((seg, i) => {
+      const div   = document.createElement('div');
+      div.className = 'seg upcoming';
+      div.dataset.idx = i;
+
+      const chord = document.createElement('span');
+      chord.className = 'seg-chord';
+      chord.textContent = seg.chord;
+
+      const text = document.createElement('span');
+      text.className = 'seg-text';
+      text.textContent = seg.text;
+
+      div.appendChild(chord);
+      div.appendChild(text);
+      lyricsEl.appendChild(div);
+      return div;
+    });
+
+    // ── Speed buttons ─────────────────────────────────────────────────
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        audio.playbackRate = parseFloat(btn.dataset.speed);
+        audio.preservesPitch = true;
+        document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // ── Playback sync ─────────────────────────────────────────────────
+    let activeIndex = -1;
+
+    audio.addEventListener('timeupdate', () => {
+      const t = audio.currentTime;
+      let idx = -1;
+      for (let i = songData.length - 1; i >= 0; i--) {
+        if (t >= songData[i].time) { idx = i; break; }
+      }
+      if (idx !== activeIndex) {
+        activeIndex = idx;
+        updateHighlight(idx);
+      }
+    });
+
+    audio.addEventListener('seeked', () => { activeIndex = -2; });
+
+    audio.addEventListener('ended', () => {
+      activeIndex = -1;
+      segEls.forEach(el => { el.classList.remove('active', 'upcoming'); el.classList.add('past'); });
+    });
+
+    function updateHighlight(idx) {
+      segEls.forEach((el, i) => {
+        el.classList.remove('active', 'past', 'upcoming');
+        if (i < idx)       el.classList.add('past');
+        else if (i === idx) el.classList.add('active');
+        else                el.classList.add('upcoming');
+      });
+
+      // Auto-scroll: keep active segment roughly in the top third of the viewport
+      if (idx >= 0 && segEls[idx]) {
+        const container    = lyricsEl;
+        const el           = segEls[idx];
+        const containerRect = container.getBoundingClientRect();
+        const elRect        = el.getBoundingClientRect();
+        // Position relative to the scrollable container
+        const relativeTop   = elRect.top - containerRect.top + container.scrollTop;
+        // Keep active line in the upper third of the visible area
+        const target        = relativeTop - container.clientHeight * 0.25;
+        container.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+      } else if (idx < 0) {
+        lyricsEl.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    // Initial state
+    updateHighlight(-1);
+  </script>
+
+</body>
+</html>

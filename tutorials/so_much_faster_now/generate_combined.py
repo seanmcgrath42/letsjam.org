@@ -1,9 +1,173 @@
+#!/usr/bin/env python3
+"""
+generate_combined.py
+====================
+Generates song.html — a combined bass playalong + karaoke page.
+
+Left panel  : chord name, fretboard diagram, note pills, countdown, up-next
+Right panel : scrolling lyrics with chord-change highlighting
+
+Data sources
+------------
+  XSC file  →  chord timings + note suggestions (bass panel)
+  song.cho  →  lyrics text aligned to each chord segment (karaoke panel)
+
+Usage
+-----
+    python generate_combined.py
+    # open song.html in a browser
+"""
+
+import re
+import json
+from pathlib import Path
+
+
+# ── Config ────────────────────────────────────────────────────────────────
+SONG_TITLE  = "So Much Faster Now, E Major"
+SUBTITLE    = "Bass Playalong"
+AUDIO_FILE  = "assets/song.mp3"
+XSC_FILE    = "assets/song.xsc"
+CHO_FILE    = "assets/song.cho"
+OUTPUT_FILE = "song.html"
+# ──────────────────────────────────────────────────────────────────────────
+
+CHORD_LIBRARY = {
+    # ── Natural major chords (notes: Root, Major 3rd, 5th, Major 7th) ──
+    "C":   {"name": "C Major",  "notes": ["C — Root",  "E — Major 3rd",  "G — 5th",  "B — Major 7th"]},
+    "D":   {"name": "D Major",  "notes": ["D — Root",  "F# — Major 3rd", "A — 5th",  "C# — Major 7th"]},
+    "E":   {"name": "E Major",  "notes": ["E — Root",  "G# — Major 3rd", "B — 5th",  "D# — Major 7th"]},
+    "F":   {"name": "F Major",  "notes": ["F — Root",  "A — Major 3rd",  "C — 5th",  "E — Major 7th"]},
+    "G":   {"name": "G Major",  "notes": ["G — Root",  "B — Major 3rd",  "D — 5th",  "F# — Major 7th"]},
+    "A":   {"name": "A Major",  "notes": ["A — Root",  "C# — Major 3rd", "E — 5th",  "G# — Major 7th"]},
+    "B":   {"name": "B Major",  "notes": ["B — Root",  "D# — Major 3rd", "F# — 5th", "A# — Major 7th"]},
+    # ── Natural minor chords (notes: Root, Minor 3rd, 5th, Minor 7th) ──
+    "Cm":  {"name": "C Minor",  "notes": ["C — Root",  "Eb — Minor 3rd", "G — 5th",  "Bb — Minor 7th"]},
+    "Dm":  {"name": "D Minor",  "notes": ["D — Root",  "F — Minor 3rd",  "A — 5th",  "C — Minor 7th"]},
+    "Em":  {"name": "E Minor",  "notes": ["E — Root",  "G — Minor 3rd",  "B — 5th",  "D — Minor 7th"]},
+    "Fm":  {"name": "F Minor",  "notes": ["F — Root",  "Ab — Minor 3rd", "C — 5th",  "Eb — Minor 7th"]},
+    "Gm":  {"name": "G Minor",  "notes": ["G — Root",  "Bb — Minor 3rd", "D — 5th",  "F — Minor 7th"]},
+    "Am":  {"name": "A Minor",  "notes": ["A — Root",  "C — Minor 3rd",  "E — 5th",  "G — Minor 7th"]},
+    "Bm":  {"name": "B Minor",  "notes": ["B — Root",  "D — Minor 3rd",  "F# — 5th", "A — Minor 7th"]},
+    # ── Sharps / Flats major ──────────────────────────────────────────
+    "C#":  {"name": "C# Major", "notes": ["C# — Root", "F — Major 3rd",  "G# — 5th", "C — Major 7th"]},
+    "Db":  {"name": "Db Major", "notes": ["Db — Root", "F — Major 3rd",  "Ab — 5th", "C — Major 7th"]},
+    "D#":  {"name": "D# Major", "notes": ["D# — Root", "G — Major 3rd",  "A# — 5th", "D — Major 7th"]},
+    "Eb":  {"name": "Eb Major", "notes": ["Eb — Root", "G — Major 3rd",  "Bb — 5th", "D — Major 7th"]},
+    "F#":  {"name": "F# Major", "notes": ["F# — Root", "A# — Major 3rd", "C# — 5th", "F — Major 7th"]},
+    "Gb":  {"name": "Gb Major", "notes": ["Gb — Root", "Bb — Major 3rd", "Db — 5th", "F — Major 7th"]},
+    "G#":  {"name": "G# Major", "notes": ["G# — Root", "C — Major 3rd",  "D# — 5th", "G — Major 7th"]},
+    "Ab":  {"name": "Ab Major", "notes": ["Ab — Root", "C — Major 3rd",  "Eb — 5th", "G — Major 7th"]},
+    "A#":  {"name": "A# Major", "notes": ["A# — Root", "D — Major 3rd",  "F — 5th",  "A — Major 7th"]},
+    "Bb":  {"name": "Bb Major", "notes": ["Bb — Root", "D — Major 3rd",  "F — 5th",  "A — Major 7th"]},
+    # ── Sharp/flat minor chords ───────────────────────────────────────
+    "C#m": {"name": "C# Minor", "notes": ["C# — Root", "E — Minor 3rd",  "G# — 5th", "B — Minor 7th"]},
+    "Ebm": {"name": "Eb Minor", "notes": ["Eb — Root", "Gb — Minor 3rd", "Bb — 5th", "Db — Minor 7th"]},
+    "F#m": {"name": "F# Minor", "notes": ["F# — Root", "A — Minor 3rd",  "C# — 5th", "E — Minor 7th"]},
+    "Abm": {"name": "Ab Minor", "notes": ["Ab — Root", "B — Minor 3rd",  "Eb — 5th", "Gb — Minor 7th"]},
+    "Bbm": {"name": "Bb Minor", "notes": ["Bb — Root", "Db — Minor 3rd", "F — 5th",  "Ab — Minor 7th"]},
+}
+
+
+# ── XSC parser ────────────────────────────────────────────────────────────
+
+def parse_xsc(xsc_path: Path) -> list:
+    if not xsc_path.exists():
+        print(f"  [skip] XSC file not found: {xsc_path}")
+        return []
+    entries, in_markers = [], False
+    with open(xsc_path, encoding="utf-8") as f:
+        for raw_line in f:
+            line = raw_line.strip()
+            if line == "SectionStart,Markers":   in_markers = True;  continue
+            if line == "SectionEnd,Markers":     break
+            if not in_markers or not line.startswith("S,"): continue
+            parts = line.split(",")
+            if len(parts) < 6: continue
+            label, timestamp = parts[3].strip(), parts[5].strip()
+            m = re.match(r"(\d+):(\d+):(\d+)\.(\d+)", timestamp)
+            if not m: continue
+            h, mn, s, frac = m.groups()
+            secs = round(int(h)*3600 + int(mn)*60 + int(s) + int(frac)/(10**len(frac)), 3)
+            if label in CHORD_LIBRARY:
+                cd = CHORD_LIBRARY[label]
+                entries.append({"time": secs, "chord": cd["name"], "notes": cd["notes"]})
+            else:
+                print(f"  [warn] Unknown chord '{label}' at {timestamp}")
+                entries.append({"time": secs, "chord": label, "notes": [f"{label} — Root"]})
+    return entries
+
+
+# ── ChordPro parser (lyrics only) ─────────────────────────────────────────
+
+def parse_cho_lyrics(cho_path: Path) -> list[str]:
+    """
+    Return a flat list of lyric text strings, one per [Chord] segment.
+    Strips all ChordPro directives and chord markers.
+    """
+    if not cho_path.exists():
+        print(f"  [skip] .cho file not found: {cho_path} — lyrics will be empty.")
+        return []
+    content = cho_path.read_text(encoding="utf-8")
+    # Remove directives
+    content = re.sub(r'\{[^}]*\}', '', content)
+    # Split on [Chord] tokens, keeping them
+    tokens = re.split(r'(\[[^\]]+\])', content)
+    lyrics = []
+    current = []
+    for tok in tokens:
+        if re.match(r'^\[[^\]]+\]$', tok):
+            if lyrics or current:   # flush previous segment
+                lyrics.append(" ".join(current).strip())
+            current = []
+        else:
+            t = re.sub(r'\s+', ' ', tok).strip()
+            if t:
+                current.append(t)
+    if current:
+        lyrics.append(" ".join(current).strip())
+    # Drop any leading segment before the first chord marker
+    if lyrics and not lyrics[0]:
+        lyrics = lyrics[1:]
+    return lyrics
+
+
+# ── Merge XSC + lyrics ───────────────────────────────────────────────────
+
+def merge(xsc_entries: list, lyrics: list) -> list:
+    if lyrics and len(lyrics) != len(xsc_entries):
+        print(f"  [warn] {len(lyrics)} lyric segments vs {len(xsc_entries)} XSC markers "
+              f"— matching by position.")
+    merged = []
+    for i, entry in enumerate(xsc_entries):
+        text = lyrics[i] if i < len(lyrics) else ""
+        merged.append({**entry, "text": text})
+    return merged
+
+
+# ── JS data builder ───────────────────────────────────────────────────────
+
+def song_data_to_js(song_data: list) -> str:
+    lines = []
+    for e in song_data:
+        lines.append(
+            f'      {{ time: {e["time"]:.3f}, '
+            f'chord: {json.dumps(e["chord"])}, '
+            f'notes: {json.dumps(e["notes"])}, '
+            f'text:  {json.dumps(e["text"])} }}'
+        )
+    return "[\n" + ",\n".join(lines) + "\n    ]"
+
+
+# ── HTML template ─────────────────────────────────────────────────────────
+
+HTML_TEMPLATE = """\
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>So Much Faster Now, E Major — Bass Playalong</title>
+  <title>%%PAGE_TITLE%%</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -208,13 +372,13 @@
       <img src="https://letsjam.org/assets/images/lets_jam_logo_347x141.png"
            alt="Let's Jam" class="lj-logo" />
     </a>
-    <h1>So Much Faster Now, E Major</h1>
-    <p>Bass Playalong</p>
+    <h1>%%SONG_TITLE%%</h1>
+    <p>%%SUBTITLE%%</p>
   </header>
 
   <!-- Shared audio player -->
   <div class="player-card">
-    <audio id="player" controls src="assets/song.mp3"></audio>
+    <audio id="player" controls src="%%AUDIO_FILE%%"></audio>
     <div class="speed-row">
       <span class="speed-label">Speed</span>
       <button class="speed-btn" data-speed="0.5">0.5×</button>
@@ -267,64 +431,7 @@
 
   <script>
     // ── Song data ─────────────────────────────────────────────────────
-    const songData = [
-      { time: 0.000, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "You can never catch me" },
-      { time: 15.213, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "no sir no way no" },
-      { time: 17.423, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 21.683, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "You can never catch me No sir no way no" },
-      { time: 25.959, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 30.293, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "Take all the time you need cos I" },
-      { time: 32.355, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "run so much faster" },
-      { time: 34.491, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "now" },
-      { time: 40.815, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "The same old confusions well" },
-      { time: 42.900, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "they don\u2019t bother me" },
-      { time: 47.069, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "no more (No more)" },
-      { time: 51.239, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "The same old confusions they just don\u2019t" },
-      { time: 55.451, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "bother me no more (No more)" },
-      { time: 57.508, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "I know all your" },
-      { time: 59.599, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "lies because I\u2019ve heard" },
-      { time: 65.812, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "them all before" },
-      { time: 67.897, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "You can never catch me" },
-      { time: 72.053, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "no sir no way no" },
-      { time: 76.223, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 80.372, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "You can never catch me No sir no way no" },
-      { time: 82.429, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 84.521, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "Take all the time you need cos I" },
-      { time: 90.713, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "run so much faster" },
-      { time: 92.797, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "now" },
-      { time: 96.988, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "May the dust in your" },
-      { time: 101.116, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "mouth forever remind you" },
-      { time: 105.258, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "of me (of me)" },
-      { time: 107.329, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "May the dust in your mouth forever" },
-      { time: 109.393, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "remind you of me (of me)" },
-      { time: 115.627, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "Just over your horizon" },
-      { time: 117.684, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "that\u2019s that's where I'll" },
-      { time: 121.826, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "be running free" },
-      { time: 125.975, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "You can never catch me" },
-      { time: 130.089, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "no sir no way no" },
-      { time: 132.174, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 134.217, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "You can never catch me No sir no way no" },
-      { time: 140.381, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 142.522, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "Take all the time you need cos I" },
-      { time: 146.615, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "run so much faster" },
-      { time: 150.722, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "now" },
-      { time: 154.850, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "You can never catch me" },
-      { time: 156.942, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "no sir no way no" },
-      { time: 158.999, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 165.149, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "You can never catch me No sir no way no" },
-      { time: 167.220, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 171.327, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "Take all the time you need cos I" },
-      { time: 175.442, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "run so much faster" },
-      { time: 179.618, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "now" },
-      { time: 181.648, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "You can never catch me" },
-      { time: 183.705, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "no sir no way no" },
-      { time: 187.840, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 189.883, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "You can never catch me No sir no way no" },
-      { time: 191.947, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "how (no how)" },
-      { time: 196.068, chord: "B Major", notes: ["B \u2014 Root", "D# \u2014 Major 3rd", "F# \u2014 5th", "A# \u2014 Major 7th"], text:  "Take all the time you need cos I" },
-      { time: 198.549, chord: "A Major", notes: ["A \u2014 Root", "C# \u2014 Major 3rd", "E \u2014 5th", "G# \u2014 Major 7th"], text:  "run so much faster" },
-      { time: 201.370, chord: "E Major", notes: ["E \u2014 Root", "G# \u2014 Major 3rd", "B \u2014 5th", "D# \u2014 Major 7th"], text:  "now" }
-    ];
+    const songData = %%SONG_DATA%%;
 
     // ── DOM ───────────────────────────────────────────────────────────
     const audio          = document.getElementById('player');
@@ -394,9 +501,9 @@
     audio.addEventListener('seeked',  () => { activeIndex = -2; });
     audio.addEventListener('ended',   () => {
       activeIndex = -1;
-      currentChordEl.textContent = '\u2013';
-      currentNotesEl.innerHTML = '<span class="note-pill waiting">Song ended \u2014 rewind to replay</span>';
-      nextChordEl.textContent = '\u2013';
+      currentChordEl.textContent = '\\u2013';
+      currentNotesEl.innerHTML = '<span class="note-pill waiting">Song ended \\u2014 rewind to replay</span>';
+      nextChordEl.textContent = '\\u2013';
       nextNotesEl.innerHTML = '';
       countdownFill.style.width = '0%';
       segEls.forEach(el => { el.classList.remove('active', 'upcoming'); el.classList.add('past'); });
@@ -416,9 +523,9 @@
     // ── Bass panel ────────────────────────────────────────────────────
     function renderBassPanel(idx) {
       if (idx < 0) {
-        currentChordEl.textContent = '\u2013';
+        currentChordEl.textContent = '\\u2013';
         currentNotesEl.innerHTML = '';
-        nextChordEl.textContent = songData[0]?.chord ?? '\u2013';
+        nextChordEl.textContent = songData[0]?.chord ?? '\\u2013';
         renderNextNotes(0);
         fretboardEl.innerHTML = buildFretboardSVG(null, notesMode);
         updateLegend(null, notesMode);
@@ -487,7 +594,7 @@
     };
 
     function parseChord(name) {
-      const m = name.match(/^([A-G][#b]?)[ ]*(Major|Minor|m)?/i);
+      const m = name.match(/^([A-G][#b]?)[ ]*(Major|Minor|m\b)?/i);
       if (!m) return null;
       const root = NOTE_SEMITONE[m[1]];
       if (root === undefined) return null;
@@ -570,8 +677,8 @@
         if (st === undefined) return;
         const style = { ...INTERVAL_STYLE[interval] };
         // For minor chords label the flat intervals clearly
-        if (interval === 'third'   && parsed.isMinor) style.label = '\u266d3';
-        if (interval === 'seventh' && parsed.isMinor) style.label = '\u266d7';
+        if (interval === 'third'   && parsed.isMinor) style.label = '\\u266d3';
+        if (interval === 'seventh' && parsed.isMinor) style.label = '\\u266d7';
         getPositions(st).forEach(({s, fret}) => drawDot(fret, s, style));
       });
 
@@ -591,8 +698,8 @@
       const intervals = activeIntervals(mode);
       legendEl.innerHTML = intervals.map(iv => {
         let label = LEGEND_LABELS[iv];
-        if (parsed?.isMinor && iv === 'third')   label = '\u266d3rd (minor)';
-        if (parsed?.isMinor && iv === 'seventh') label = '\u266d7th (minor)';
+        if (parsed?.isMinor && iv === 'third')   label = '\\u266d3rd (minor)';
+        if (parsed?.isMinor && iv === 'seventh') label = '\\u266d7th (minor)';
         return `<span class="legend-item"><span class="legend-pip ${iv}"></span>${label}</span>`;
       }).join('');
     }
@@ -605,3 +712,42 @@
 
 </body>
 </html>
+"""
+
+
+# ── Build ─────────────────────────────────────────────────────────────────
+
+def build_html(title, subtitle, audio_file, song_data):
+    html = HTML_TEMPLATE
+    html = html.replace("%%PAGE_TITLE%%",  f"{title} — Bass Playalong")
+    html = html.replace("%%SONG_TITLE%%",  title)
+    html = html.replace("%%SUBTITLE%%",    subtitle)
+    html = html.replace("%%AUDIO_FILE%%",  audio_file)
+    html = html.replace("%%SONG_DATA%%",   song_data_to_js(song_data))
+    return html
+
+
+# ── Main ──────────────────────────────────────────────────────────────────
+
+def main():
+    base = Path(__file__).parent
+
+    print(f"Parsing XSC: {XSC_FILE} ...")
+    xsc_entries = parse_xsc(base / XSC_FILE)
+    print(f"  {len(xsc_entries)} chord markers.")
+
+    print(f"Parsing lyrics: {CHO_FILE} ...")
+    lyrics = parse_cho_lyrics(base / CHO_FILE)
+    print(f"  {len(lyrics)} lyric segments.")
+
+    print("Merging ...")
+    song_data = merge(xsc_entries, lyrics)
+
+    html     = build_html(SONG_TITLE, SUBTITLE, AUDIO_FILE, song_data)
+    out_path = base / OUTPUT_FILE
+    out_path.write_text(html, encoding="utf-8")
+    print(f"\nWritten: {out_path}")
+
+
+if __name__ == "__main__":
+    main()
