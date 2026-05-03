@@ -232,17 +232,16 @@ HTML_TEMPLATE = """\
     .speed-btn:hover { background: var(--accent-dim); color: var(--text); }
     .speed-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-    /* Notes dropdown */
-    .notes-select-row { display: flex; align-items: center; gap: 0.6rem; }
-    .notes-select-row .speed-label { white-space: nowrap; }
-    select#notesMode {
+    /* Controls row (dropdowns) */
+    .ctrl-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+    .ctrl-row .speed-label { white-space: nowrap; }
+    .ctrl-row select {
       background: var(--surface2); color: var(--text);
       border: 1px solid var(--border); border-radius: 8px;
       padding: 0.35rem 0.7rem; font-size: 0.82rem; font-family: var(--font);
-      cursor: pointer; outline: none;
-      transition: border-color .15s;
+      cursor: pointer; outline: none; transition: border-color .15s;
     }
-    select#notesMode:hover, select#notesMode:focus { border-color: var(--accent); }
+    .ctrl-row select:hover, .ctrl-row select:focus { border-color: var(--accent); }
 
     /* ── Two-column layout ── */
     .main-cols {
@@ -385,13 +384,33 @@ HTML_TEMPLATE = """\
       <button class="speed-btn" data-speed="0.75">0.75×</button>
       <button class="speed-btn active" data-speed="1.0">1.0×</button>
     </div>
-    <div class="notes-select-row">
+    <div class="ctrl-row">
       <span class="speed-label">Show Notes</span>
       <select id="notesMode">
         <option value="root" selected>Root</option>
         <option value="root-fifth">Root / Fifth</option>
         <option value="root-third-fifth">Root / Third / Fifth</option>
         <option value="root-third-fifth-seventh">Root / Third / Fifth / Seventh</option>
+      </select>
+    </div>
+    <div class="ctrl-row">
+      <span class="speed-label">Instrument</span>
+      <select id="instrument">
+        <option value="bass" selected>Bass</option>
+        <option value="guitar">Guitar</option>
+        <option value="ukulele">Ukulele</option>
+        <option value="mandolin">Mandolin</option>
+      </select>
+      <span class="speed-label" style="margin-left:0.8rem">Capo</span>
+      <select id="capo">
+        <option value="0" selected>None</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
       </select>
     </div>
   </div>
@@ -443,10 +462,14 @@ HTML_TEMPLATE = """\
     const fretboardEl    = document.getElementById('fretboard');
     const lyricsEl       = document.getElementById('lyrics-scroll');
     const notesModeEl    = document.getElementById('notesMode');
+    const instrumentEl   = document.getElementById('instrument');
+    const capoEl         = document.getElementById('capo');
     const legendEl       = document.getElementById('fretboardLegend');
 
-    let activeIndex = -1;
-    let notesMode   = notesModeEl.value;
+    let activeIndex  = -1;
+    let notesMode    = notesModeEl.value;
+    let instrument   = instrumentEl.value;
+    let capo         = parseInt(capoEl.value);
 
     // ── Build lyric segments ──────────────────────────────────────────
     const segEls = songData.map((seg, i) => {
@@ -477,10 +500,18 @@ HTML_TEMPLATE = """\
       });
     });
 
-    // ── Notes mode dropdown ───────────────────────────────────────────
+    // ── Control dropdowns ─────────────────────────────────────────────
     notesModeEl.addEventListener('change', () => {
       notesMode = notesModeEl.value;
-      renderBassPanel(activeIndex);   // redraw fretboard immediately
+      renderBassPanel(activeIndex);
+    });
+    instrumentEl.addEventListener('change', () => {
+      instrument = instrumentEl.value;
+      renderBassPanel(activeIndex);
+    });
+    capoEl.addEventListener('change', () => {
+      capo = parseInt(capoEl.value);
+      renderBassPanel(activeIndex);
     });
 
     // ── Core sync ─────────────────────────────────────────────────────
@@ -527,7 +558,7 @@ HTML_TEMPLATE = """\
         currentNotesEl.innerHTML = '';
         nextChordEl.textContent = songData[0]?.chord ?? '\\u2013';
         renderNextNotes(0);
-        fretboardEl.innerHTML = buildFretboardSVG(null, notesMode);
+        fretboardEl.innerHTML = buildFretboardSVG(null, notesMode, instrument, capo);
         updateLegend(null, notesMode);
         return;
       }
@@ -536,7 +567,7 @@ HTML_TEMPLATE = """\
       currentChordEl.textContent = entry.chord;
       currentNotesEl.innerHTML = filteredNotes(entry.notes).map(n => `<span class="note-pill">${n}</span>`).join('');
       const parsed = parseChord(entry.chord);
-      fretboardEl.innerHTML = parsed ? buildFretboardSVG(parsed, notesMode) : '';
+      fretboardEl.innerHTML = parsed ? buildFretboardSVG(parsed, notesMode, instrument, capo) : '';
       updateLegend(parsed, notesMode);
       if (next) { nextChordEl.textContent = next.chord; renderNextNotes(idx + 1); }
       else       { nextChordEl.textContent = '(End)';   nextNotesEl.innerHTML = ''; }
@@ -581,9 +612,13 @@ HTML_TEMPLATE = """\
       'C':0,'C#':1,'Db':1,'D':2,'D#':3,'Eb':3,'E':4,
       'F':5,'F#':6,'Gb':6,'G':7,'G#':8,'Ab':8,'A':9,'A#':10,'Bb':10,'B':11
     };
-    const OPEN_STRINGS = [7, 2, 9, 4];
-    const STR_LABELS   = ['G', 'D', 'A', 'E'];
-    const STR_WIDTH    = [1, 1.5, 2, 2.5];
+    // Instrument configs — strings listed top→bottom as shown on the diagram
+    const INSTRUMENTS = {
+      bass:     { strings:[7,2,9,4],       labels:['G','D','A','E'],         widths:[1,1.5,2,2.5] },
+      guitar:   { strings:[4,11,7,2,9,4],  labels:['e','B','G','D','A','E'], widths:[0.8,1,1.3,1.7,2,2.5] },
+      ukulele:  { strings:[9,4,0,7],       labels:['A','E','C','G'],         widths:[1,1.2,1.5,1.2] },
+      mandolin: { strings:[4,9,2,7],       labels:['E','A','D','G'],         widths:[1,1.5,2,2.5] },
+    };
 
     // Interval colours: fill, stroke, open-stroke
     const INTERVAL_STYLE = {
@@ -608,10 +643,12 @@ HTML_TEMPLATE = """\
       };
     }
 
-    function getPositions(semitone) {
-      return OPEN_STRINGS.reduce((acc, open, sIdx) => {
-        const fret = (semitone - open + 12) % 12;
-        if (fret <= 5) acc.push({ s: sIdx, fret });
+    // Return fret positions (0 = open/capo) for a given semitone, instrument and capo
+    function getPositions(semitone, instr, capoFret) {
+      return INSTRUMENTS[instr].strings.reduce((acc, open, sIdx) => {
+        const effectiveOpen = (open + capoFret) % 12;
+        const fret = (semitone - effectiveOpen + 12) % 12;
+        if (fret <= 4) acc.push({ s: sIdx, fret });
         return acc;
       }, []);
     }
@@ -626,33 +663,55 @@ HTML_TEMPLATE = """\
       }
     }
 
-    function buildFretboardSVG(parsed, mode) {
-      const W=256,H=84,nutX=24,nutW=4,fretW=40,nFrets=5,topPad=18,strGap=16,dotR=8;
-      const openX=nutX-13, fbRight=nutX+nutW+nFrets*fretW;
-      const strY = OPEN_STRINGS.map((_,i) => topPad+i*strGap);
-      const cx   = f => f===0 ? openX : nutX+nutW+(f-0.5)*fretW;
+    function buildFretboardSVG(parsed, mode, instr, capoFret) {
+      const cfg      = INSTRUMENTS[instr];
+      const nStrings = cfg.strings.length;
+      const W        = 256;
+      const nutX     = 24, nutW = 4, fretW = 40, nFrets = 4, topPad = 18, dotR = 8;
+      const strGap   = nStrings > 4 ? 13 : 16;
+      const H        = topPad + (nStrings - 1) * strGap + 14;
+      const openX    = nutX - 13;
+      const fbRight  = nutX + nutW + nFrets * fretW;
+      const strY     = cfg.strings.map((_, i) => topPad + i * strGap);
+      const cx       = f => f === 0 ? openX : nutX + nutW + (f - 0.5) * fretW;
       const p = [];
       p.push(`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`);
       p.push(`<rect width="${W}" height="${H}" fill="#0d1117" rx="8"/>`);
-      for (let f=1;f<=nFrets;f++) {
-        const x=nutX+nutW+(f-0.5)*fretW;
-        p.push(`<text x="${x}" y="11" text-anchor="middle" font-size="9" fill="#2d3f55">${f}</text>`);
+
+      // Fret number labels (show actual fret numbers when capo > 0)
+      for (let f = 1; f <= nFrets; f++) {
+        const x = nutX + nutW + (f - 0.5) * fretW;
+        const label = capoFret > 0 ? capoFret + f : f;
+        p.push(`<text x="${x}" y="11" text-anchor="middle" font-size="9" fill="#2d3f55">${label}</text>`);
       }
-      STR_LABELS.forEach((lbl,i) =>
+
+      // String name labels (right side)
+      cfg.labels.forEach((lbl, i) =>
         p.push(`<text x="${fbRight+6}" y="${strY[i]+4}" text-anchor="start" font-size="9" font-weight="700" fill="#2d3f55">${lbl}</text>`));
-      strY.forEach((y,i) =>
-        p.push(`<line x1="${nutX+nutW}" y1="${y}" x2="${fbRight}" y2="${y}" stroke="#1a2d46" stroke-width="${STR_WIDTH[i]}"/>`));
-      for (let f=1;f<=nFrets;f++) {
-        const x=nutX+nutW+f*fretW;
-        p.push(`<line x1="${x}" y1="${strY[0]}" x2="${x}" y2="${strY[3]}" stroke="#1a2d46" stroke-width="1"/>`);
+
+      // Strings
+      strY.forEach((y, i) =>
+        p.push(`<line x1="${nutX+nutW}" y1="${y}" x2="${fbRight}" y2="${y}" stroke="#1a2d46" stroke-width="${cfg.widths[i]}"/>`));
+
+      // Fret lines
+      for (let f = 1; f <= nFrets; f++) {
+        const x = nutX + nutW + f * fretW;
+        p.push(`<line x1="${x}" y1="${strY[0]}" x2="${x}" y2="${strY[nStrings-1]}" stroke="#1a2d46" stroke-width="1"/>`);
       }
-      const nutTop=strY[0]-6, nutBot=strY[3]+6;
-      p.push(`<rect x="${nutX}" y="${nutTop}" width="${nutW}" height="${nutBot-nutTop}" fill="#c0c8d8" rx="1"/>`);
-      p.push(`<line x1="${nutX-1}" y1="${strY[0]}" x2="${nutX-1}" y2="${strY[3]}" stroke="#1a2d46" stroke-width="1" stroke-dasharray="3 3"/>`);
+
+      // Nut or capo bar
+      const nutTop = strY[0] - 6, nutBot = strY[nStrings-1] + 6;
+      if (capoFret === 0) {
+        p.push(`<rect x="${nutX}" y="${nutTop}" width="${nutW}" height="${nutBot-nutTop}" fill="#c0c8d8" rx="1"/>`);
+      } else {
+        p.push(`<rect x="${nutX}" y="${nutTop}" width="${nutW+2}" height="${nutBot-nutTop}" fill="#e94560" rx="2"/>`);
+        p.push(`<text x="${nutX+(nutW/2)+1}" y="${nutTop-3}" text-anchor="middle" font-size="8" font-weight="700" fill="#e94560">C${capoFret}</text>`);
+      }
+      p.push(`<line x1="${nutX-1}" y1="${strY[0]}" x2="${nutX-1}" y2="${strY[nStrings-1]}" stroke="#1a2d46" stroke-width="1" stroke-dasharray="3 3"/>`);
 
       function drawDot(fret, sIdx, style) {
-        const x=cx(fret), y=strY[sIdx];
-        if (fret===0) {
+        const x = cx(fret), y = strY[sIdx];
+        if (fret === 0) {
           p.push(`<circle cx="${x}" cy="${y}" r="${dotR}" fill="${style.fill}" fill-opacity="0.15" stroke="${style.stroke}" stroke-width="1.5"/>`);
           p.push(`<text x="${x}" y="${y+4}" text-anchor="middle" font-size="8" font-weight="700" fill="${style.stroke}">${style.label}</text>`);
         } else {
@@ -670,16 +729,15 @@ HTML_TEMPLATE = """\
         seventh: parsed.seventhSemitone,
       };
 
-      // Draw in back-to-front order so root dots appear on top
+      // Draw back-to-front so root appears on top
       const intervals = activeIntervals(mode);
       [...intervals].reverse().forEach(interval => {
         const st = semitones[interval];
         if (st === undefined) return;
         const style = { ...INTERVAL_STYLE[interval] };
-        // For minor chords label the flat intervals clearly
         if (interval === 'third'   && parsed.isMinor) style.label = '\\u266d3';
         if (interval === 'seventh' && parsed.isMinor) style.label = '\\u266d7';
-        getPositions(st).forEach(({s, fret}) => drawDot(fret, s, style));
+        getPositions(st, instr, capoFret).forEach(({s, fret}) => drawDot(fret, s, style));
       });
 
       p.push('</svg>');
@@ -705,7 +763,7 @@ HTML_TEMPLATE = """\
     }
 
     // ── Initial render ────────────────────────────────────────────────
-    updateLegend(null, notesMode);
+    updateLegend(null, notesMode, instrument, capo);
     renderBassPanel(-1);
     renderLyrics(-1);
   </script>
