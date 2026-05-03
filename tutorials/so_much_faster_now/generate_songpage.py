@@ -814,11 +814,20 @@ HTML_TEMPLATE = """\
       if (mode === 'chord') {
         const chordMap = COWBOY_CHORDS[instr];
         if (chordMap) {
-          // Show the standard open/cowboy shape for the named chord.
-          // The capo bar is already visible in the diagram — the player places
-          // their capo there and plays the familiar shape; the capo handles
-          // the pitch transposition automatically.
-          const voicing = chordMap[parsed.name];
+          // With capo at fret N, the player must finger a shape N semitones LOWER
+          // than the target chord. E.g. E Major at capo 2 → finger D Major shape.
+          // (D shape + capo raising pitch by 2 semitones = E Major sounding.)
+          let lookupName;
+          if (capoFret > 0) {
+            const transRoot = (parsed.rootSemitone - capoFret + 12) % 12;
+            const rootName  = SEMITONE_TO_NOTE[transRoot];
+            lookupName = /7\\s*$/.test(parsed.name)
+              ? rootName + '7'
+              : rootName + (parsed.isMinor ? ' Minor' : ' Major');
+          } else {
+            lookupName = parsed.name;
+          }
+          const voicing = chordMap[lookupName];
           if (voicing) {
             // Mark muted strings with an X
             cfg.strings.forEach((_, sIdx) => {
