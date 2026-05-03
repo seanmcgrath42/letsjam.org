@@ -388,18 +388,18 @@ HTML_TEMPLATE = """\
     <div class="ctrl-row">
       <span class="speed-label">Show Notes</span>
       <select id="notesMode">
-        <option value="root" selected>Root</option>
+        <option value="root">Root</option>
         <option value="root-fifth">Root / Fifth</option>
         <option value="root-third-fifth">Root / Third / Fifth</option>
         <option value="root-third-fifth-seventh">Root / Third / Fifth / Seventh</option>
-        <option value="chord">Chord</option>
+        <option value="chord" selected>Chord</option>
       </select>
     </div>
     <div class="ctrl-row">
       <span class="speed-label">Instrument</span>
       <select id="instrument">
-        <option value="bass" selected>Bass</option>
-        <option value="guitar">Guitar</option>
+        <option value="bass">Bass</option>
+        <option value="guitar" selected>Guitar</option>
         <option value="ukulele">Ukulele</option>
         <option value="mandolin">Mandolin</option>
       </select>
@@ -814,14 +814,11 @@ HTML_TEMPLATE = """\
       if (mode === 'chord') {
         const chordMap = COWBOY_CHORDS[instr];
         if (chordMap) {
-          // With a capo, the player uses a shape that is capoFret semitones lower.
-          // e.g. E Major + capo 2 → look up D Major shape (D+2 sounds E).
-          let lookupName = parsed.name;
-          if (capoFret > 0) {
-            const transRoot = (parsed.rootSemitone - capoFret + 12) % 12;
-            lookupName = SEMITONE_TO_NOTE[transRoot] + ' ' + (parsed.isMinor ? 'Minor' : 'Major');
-          }
-          const voicing = chordMap[lookupName];
+          // Show the standard open/cowboy shape for the named chord.
+          // The capo bar is already visible in the diagram — the player places
+          // their capo there and plays the familiar shape; the capo handles
+          // the pitch transposition automatically.
+          const voicing = chordMap[parsed.name];
           if (voicing) {
             // Mark muted strings with an X
             cfg.strings.forEach((_, sIdx) => {
