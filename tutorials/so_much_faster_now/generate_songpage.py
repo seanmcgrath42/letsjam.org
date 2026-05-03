@@ -25,7 +25,7 @@ from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────
 SONG_TITLE  = "So Much Faster Now, E Major"
-SUBTITLE    = "Bass Playalong"
+SUBTITLE    = "Practice App"
 AUDIO_FILE  = "assets/song.mp3"
 XSC_FILE    = "assets/song.xsc"
 CHO_FILE    = "assets/song.cho"
@@ -41,6 +41,7 @@ CHORD_LIBRARY = {
     "F":   {"name": "F Major",  "notes": ["F — Root",  "A — Major 3rd",  "C — 5th",  "Eb — 7th"]},
     "G":   {"name": "G Major",  "notes": ["G — Root",  "B — Major 3rd",  "D — 5th",  "F — 7th"]},
     "A":   {"name": "A Major",  "notes": ["A — Root",  "C# — Major 3rd", "E — 5th",  "G — 7th"]},
+    # TODO: Fix so that this song uses B7 rather than B (update XSC markers + add "B7" entry to CHORD_LIBRARY)
     "B":   {"name": "B Major",  "notes": ["B — Root",  "D# — Major 3rd", "F# — 5th", "A — 7th"]},
     # ── Natural minor chords (notes: Root, Minor 3rd, 5th, Minor 7th) ──
     "Cm":  {"name": "C Minor",  "notes": ["C — Root",  "Eb — Minor 3rd", "G — 5th",  "Bb — Minor 7th"]},
@@ -904,7 +905,7 @@ HTML_TEMPLATE = """\
 
 def build_html(title, subtitle, audio_file, song_data):
     html = HTML_TEMPLATE
-    html = html.replace("%%PAGE_TITLE%%",  f"{title} — Bass Playalong")
+    html = html.replace("%%PAGE_TITLE%%",  f"{title} — Practice App")
     html = html.replace("%%SONG_TITLE%%",  title)
     html = html.replace("%%SUBTITLE%%",    subtitle)
     html = html.replace("%%AUDIO_FILE%%",  audio_file)
