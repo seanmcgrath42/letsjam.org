@@ -507,6 +507,8 @@
       'C':0,'C#':1,'Db':1,'D':2,'D#':3,'Eb':3,'E':4,
       'F':5,'F#':6,'Gb':6,'G':7,'G#':8,'Ab':8,'A':9,'A#':10,'Bb':10,'B':11
     };
+    // Reverse map: semitone → note name (preferred accidentals for common chord names)
+    const SEMITONE_TO_NOTE = ['C','C#','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
     // Instrument configs — strings listed top→bottom as shown on the diagram
     const INSTRUMENTS = {
       bass:     { strings:[7,2,9,4],       labels:['G','D','A','E'],         widths:[1,1.5,2,2.5] },
@@ -656,11 +658,10 @@
       p.push(`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`);
       p.push(`<rect width="${W}" height="${H}" fill="#0d1117" rx="8"/>`);
 
-      // Fret number labels (show actual fret numbers when capo > 0)
+      // Fret number labels — always relative to capo (1-5); capo bar shows actual position
       for (let f = 1; f <= nFrets; f++) {
         const x = nutX + nutW + (f - 0.5) * fretW;
-        const label = capoFret > 0 ? capoFret + f : f;
-        p.push(`<text x="${x}" y="11" text-anchor="middle" font-size="9" fill="#2d3f55">${label}</text>`);
+        p.push(`<text x="${x}" y="11" text-anchor="middle" font-size="9" fill="#2d3f55">${f}</text>`);
       }
 
       // String name labels (right side)
@@ -705,7 +706,14 @@
       if (mode === 'chord') {
         const chordMap = COWBOY_CHORDS[instr];
         if (chordMap) {
-          const voicing = chordMap[parsed.name];
+          // With a capo, the player uses a shape that is capoFret semitones lower.
+          // e.g. E Major + capo 2 → look up D Major shape (D+2 sounds E).
+          let lookupName = parsed.name;
+          if (capoFret > 0) {
+            const transRoot = (parsed.rootSemitone - capoFret + 12) % 12;
+            lookupName = SEMITONE_TO_NOTE[transRoot] + ' ' + (parsed.isMinor ? 'Minor' : 'Major');
+          }
+          const voicing = chordMap[lookupName];
           if (voicing) {
             // Mark muted strings with an X
             cfg.strings.forEach((_, sIdx) => {
