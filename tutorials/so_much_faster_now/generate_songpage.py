@@ -475,6 +475,12 @@ HTML_TEMPLATE = """\
     let instrument   = instrumentEl.value;
     let capo         = parseInt(capoEl.value);
 
+    // ── Chord shorthand formatter ─────────────────────────────────────
+    // "E Major" → "E"  |  "A Minor" → "Am"  |  "B7" → "B7"
+    function shortChord(name) {
+      return name.replace(' Major', '').replace(' Minor', 'm');
+    }
+
     // ── Build lyric segments ──────────────────────────────────────────
     const segEls = songData.map((seg, i) => {
       const div   = document.createElement('div');
@@ -484,7 +490,7 @@ HTML_TEMPLATE = """\
       div.addEventListener('click', () => { audio.currentTime = seg.time; });
       const chord = document.createElement('span');
       chord.className = 'seg-chord';
-      chord.textContent = seg.chord;
+      chord.textContent = shortChord(seg.chord);
       const text = document.createElement('span');
       text.className = 'seg-text';
       text.textContent = seg.text;
