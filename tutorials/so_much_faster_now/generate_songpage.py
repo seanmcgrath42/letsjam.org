@@ -42,8 +42,8 @@ CHORD_LIBRARY = {
     "F":   {"name": "F Major",  "notes": ["F — Root",  "A — Major 3rd",  "C — 5th",  "Eb — 7th"]},
     "G":   {"name": "G Major",  "notes": ["G — Root",  "B — Major 3rd",  "D — 5th",  "F — 7th"]},
     "A":   {"name": "A Major",  "notes": ["A — Root",  "C# — Major 3rd", "E — 5th",  "G — 7th"]},
-    # TODO: Fix so that this song uses B7 rather than B (update XSC markers + add "B7" entry to CHORD_LIBRARY)
     "B":   {"name": "B Major",  "notes": ["B — Root",  "D# — Major 3rd", "F# — 5th", "A — 7th"]},
+    "B7":  {"name": "B7",       "notes": ["B — Root",  "D# — Major 3rd", "F# — 5th", "A — 7th"]},
     # ── Natural minor chords (notes: Root, Minor 3rd, 5th, Minor 7th) ──
     "Cm":  {"name": "C Minor",  "notes": ["C — Root",  "Eb — Minor 3rd", "G — 5th",  "Bb — Minor 7th"]},
     "Dm":  {"name": "D Minor",  "notes": ["D — Root",  "F — Minor 3rd",  "A — 5th",  "C — Minor 7th"]},
