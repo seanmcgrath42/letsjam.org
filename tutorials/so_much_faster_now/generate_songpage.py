@@ -25,6 +25,7 @@ from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────
 SONG_TITLE  = "So Much Faster Now, E Major"
+SONG_URL    = "https://seanmcgrathmusic.com/songs/oh-happy-days/"
 SUBTITLE    = "Practice App"
 AUDIO_FILE  = "assets/song.mp3"
 XSC_FILE    = "assets/song.xsc"
@@ -373,7 +374,7 @@ HTML_TEMPLATE = """\
       <img src="https://letsjam.org/assets/images/lets_jam_logo_347x141.png"
            alt="Let's Jam" class="lj-logo" />
     </a>
-    <h1>%%SONG_TITLE%%</h1>
+    <h1><a href="%%SONG_URL%%" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;">%%SONG_TITLE%%</a></h1>
     <p>%%SUBTITLE%%</p>
   </header>
 
@@ -903,9 +904,10 @@ HTML_TEMPLATE = """\
 
 # ── Build ─────────────────────────────────────────────────────────────────
 
-def build_html(title, subtitle, audio_file, song_data):
+def build_html(title, song_url, subtitle, audio_file, song_data):
     html = HTML_TEMPLATE
     html = html.replace("%%PAGE_TITLE%%",  f"{title} — Practice App")
+    html = html.replace("%%SONG_URL%%",    song_url)
     html = html.replace("%%SONG_TITLE%%",  title)
     html = html.replace("%%SUBTITLE%%",    subtitle)
     html = html.replace("%%AUDIO_FILE%%",  audio_file)
@@ -929,7 +931,7 @@ def main():
     print("Merging ...")
     song_data = merge(xsc_entries, lyrics)
 
-    html     = build_html(SONG_TITLE, SUBTITLE, AUDIO_FILE, song_data)
+    html     = build_html(SONG_TITLE, SONG_URL, SUBTITLE, AUDIO_FILE, song_data)
     out_path = base / OUTPUT_FILE
     out_path.write_text(html, encoding="utf-8")
     print(f"\nWritten: {out_path}")
