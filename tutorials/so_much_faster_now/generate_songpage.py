@@ -351,7 +351,7 @@ HTML_TEMPLATE = """\
       transition: background 0.2s, box-shadow 0.2s; margin-bottom: 0.1rem;
     }
     .seg-chord {
-      min-width: 2.8rem; font-size: 1.2rem; font-weight: 900;
+      width: 3.5rem; font-size: 1.2rem; font-weight: 900;
       color: var(--muted); letter-spacing: -0.01em;
       flex-shrink: 0; transition: color 0.2s; text-align: right;
     }
