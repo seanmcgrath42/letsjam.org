@@ -249,6 +249,11 @@
         <option value="6">6</option>
         <option value="7">7</option>
       </select>
+      <span class="speed-label" style="margin-left:0.8rem">LH/RH</span>
+      <select id="handed">
+        <option value="right" selected>Right Handed</option>
+        <option value="left">Left Handed</option>
+      </select>
     </div>
   </div>
 
@@ -358,12 +363,14 @@
     const notesModeEl    = document.getElementById('notesMode');
     const instrumentEl   = document.getElementById('instrument');
     const capoEl         = document.getElementById('capo');
+    const handedEl       = document.getElementById('handed');
     const legendEl       = document.getElementById('fretboardLegend');
 
     let activeIndex  = -1;
     let notesMode    = notesModeEl.value;
     let instrument   = instrumentEl.value;
     let capo         = parseInt(capoEl.value);
+    let handed       = handedEl.value;
 
     // ── Chord shorthand formatter ─────────────────────────────────────
     // "E Major" → "E"  |  "A Minor" → "Am"  |  "B7" → "B7"
@@ -413,6 +420,10 @@
       capo = parseInt(capoEl.value);
       renderBassPanel(activeIndex);
     });
+    handedEl.addEventListener('change', () => {
+      handed = handedEl.value;
+      renderBassPanel(activeIndex);
+    });
 
     // ── Core sync ─────────────────────────────────────────────────────
     audio.addEventListener('timeupdate', () => {
@@ -459,7 +470,7 @@
         currentNotesEl.innerHTML = '';
         nextChordEl.textContent = songData[0]?.chord ?? '\u2013';
         renderNextNotes(0);
-        fretboardEl.innerHTML = buildFretboardSVG(null, notesMode, instrument, capo);
+        fretboardEl.innerHTML = buildFretboardSVG(null, notesMode, instrument, capo, handed === 'left');
         updateLegend(null, notesMode);
         return;
       }
@@ -468,7 +479,7 @@
       currentChordEl.textContent = entry.chord;
       currentNotesEl.innerHTML = filteredNotes(entry.notes).map(n => `<span class="note-pill">${n}</span>`).join('');
       const parsed = parseChord(entry.chord);
-      fretboardEl.innerHTML = parsed ? buildFretboardSVG(parsed, notesMode, instrument, capo) : '';
+      fretboardEl.innerHTML = parsed ? buildFretboardSVG(parsed, notesMode, instrument, capo, handed === 'left') : '';
       updateLegend(parsed, notesMode);
       if (next) { nextChordEl.textContent = next.chord; renderNextNotes(idx + 1); }
       else       { nextChordEl.textContent = '(End)';   nextNotesEl.innerHTML = ''; }
@@ -649,50 +660,63 @@
       }
     }
 
-    function buildFretboardSVG(parsed, mode, instr, capoFret) {
+    function buildFretboardSVG(parsed, mode, instr, capoFret, isLeftHanded) {
+      const LH       = !!isLeftHanded;
       const cfg      = INSTRUMENTS[instr];
       const nStrings = cfg.strings.length;
       const W        = 280;
-      const nutX     = 24, nutW = 4, fretW = 40, nFrets = 5, topPad = 18, dotR = 8;
+      const nutX = 24, nutW = 4, fretW = 40, nFrets = 5, topPad = 18, dotR = 8;
       const strGap   = nStrings > 4 ? 13 : 16;
       const H        = topPad + (nStrings - 1) * strGap + 14;
-      const openX    = nutX - 13;
-      const fbRight  = nutX + nutW + nFrets * fretW;
-      const strY     = cfg.strings.map((_, i) => topPad + i * strGap);
-      const cx       = f => f === 0 ? openX : nutX + nutW + (f - 0.5) * fretW;
+
+      // Left-handed: nut on the right, frets count leftward from nut
+      const openX     = LH ? W - (nutX - 13)                    : nutX - 13;
+      const fbStart   = LH ? W - (nutX + nutW + nFrets * fretW) : nutX + nutW;
+      const fbEnd     = LH ? W - (nutX + nutW)                  : nutX + nutW + nFrets * fretW;
+      const cx        = f => f === 0 ? openX
+                           : LH ? W - (nutX + nutW + (f - 0.5) * fretW)
+                                :     nutX + nutW + (f - 0.5) * fretW;
+      const nutRectX  = LH ? W - nutX - nutW     : nutX;
+      const capoRectX = LH ? W - nutX - nutW - 2 : nutX;
+      const nutLineX  = LH ? W - nutX + 1        : nutX - 1;
+      const capoTextX = LH ? W - nutX - nutW / 2 - 1 : nutX + nutW / 2 + 1;
+      const lblX      = LH ? fbStart - 6          : fbEnd + 6;
+      const lblAnchor = LH ? 'end'                : 'start';
+
+      const strY = cfg.strings.map((_, i) => topPad + i * strGap);
       const p = [];
       p.push(`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`);
       p.push(`<rect width="${W}" height="${H}" fill="#0d1117" rx="8"/>`);
 
       // Fret number labels — always relative to capo (1-5); capo bar shows actual position
       for (let f = 1; f <= nFrets; f++) {
-        const x = nutX + nutW + (f - 0.5) * fretW;
+        const x = LH ? W - (nutX + nutW + (f - 0.5) * fretW) : nutX + nutW + (f - 0.5) * fretW;
         p.push(`<text x="${x}" y="11" text-anchor="middle" font-size="9" fill="#2d3f55">${f}</text>`);
       }
 
-      // String name labels (right side)
+      // String name labels
       cfg.labels.forEach((lbl, i) =>
-        p.push(`<text x="${fbRight+6}" y="${strY[i]+4}" text-anchor="start" font-size="9" font-weight="700" fill="#2d3f55">${lbl}</text>`));
+        p.push(`<text x="${lblX}" y="${strY[i]+4}" text-anchor="${lblAnchor}" font-size="9" font-weight="700" fill="#2d3f55">${lbl}</text>`));
 
       // Strings
       strY.forEach((y, i) =>
-        p.push(`<line x1="${nutX+nutW}" y1="${y}" x2="${fbRight}" y2="${y}" stroke="#1a2d46" stroke-width="${cfg.widths[i]}"/>`));
+        p.push(`<line x1="${fbStart}" y1="${y}" x2="${fbEnd}" y2="${y}" stroke="#1a2d46" stroke-width="${cfg.widths[i]}"/>`));
 
       // Fret lines
       for (let f = 1; f <= nFrets; f++) {
-        const x = nutX + nutW + f * fretW;
+        const x = LH ? W - (nutX + nutW + f * fretW) : nutX + nutW + f * fretW;
         p.push(`<line x1="${x}" y1="${strY[0]}" x2="${x}" y2="${strY[nStrings-1]}" stroke="#1a2d46" stroke-width="1"/>`);
       }
 
       // Nut or capo bar
       const nutTop = strY[0] - 6, nutBot = strY[nStrings-1] + 6;
       if (capoFret === 0) {
-        p.push(`<rect x="${nutX}" y="${nutTop}" width="${nutW}" height="${nutBot-nutTop}" fill="#c0c8d8" rx="1"/>`);
+        p.push(`<rect x="${nutRectX}" y="${nutTop}" width="${nutW}" height="${nutBot-nutTop}" fill="#c0c8d8" rx="1"/>`);
       } else {
-        p.push(`<rect x="${nutX}" y="${nutTop}" width="${nutW+2}" height="${nutBot-nutTop}" fill="#e94560" rx="2"/>`);
-        p.push(`<text x="${nutX+(nutW/2)+1}" y="${nutTop-3}" text-anchor="middle" font-size="8" font-weight="700" fill="#e94560">C${capoFret}</text>`);
+        p.push(`<rect x="${capoRectX}" y="${nutTop}" width="${nutW+2}" height="${nutBot-nutTop}" fill="#e94560" rx="2"/>`);
+        p.push(`<text x="${capoTextX}" y="${nutTop-3}" text-anchor="middle" font-size="8" font-weight="700" fill="#e94560">C${capoFret}</text>`);
       }
-      p.push(`<line x1="${nutX-1}" y1="${strY[0]}" x2="${nutX-1}" y2="${strY[nStrings-1]}" stroke="#1a2d46" stroke-width="1" stroke-dasharray="3 3"/>`);
+      p.push(`<line x1="${nutLineX}" y1="${strY[0]}" x2="${nutLineX}" y2="${strY[nStrings-1]}" stroke="#1a2d46" stroke-width="1" stroke-dasharray="3 3"/>`);
 
       function drawDot(fret, sIdx, style) {
         const x = cx(fret), y = strY[sIdx];
