@@ -3,7 +3,7 @@ layout: jam-circle
 title: Clare
 permalink: /jam-circle/clare/
 image: /assets/images/group_photo.jpg
-when: Every Monday from 6pm
+when: Every Monday from 6pm (currently on summer break)
 where: The Copper Jug Cafe, Newbridge Road, Ennis, Co. Clare, V95 PX2T
 previous_circle:
   name: Galway

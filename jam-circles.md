@@ -18,7 +18,7 @@ We currently run jam circles weekly in Galway & Clare with more circles opening 
     <img src="{{ '/assets/images/group_photo.jpg' | relative_url }}" alt="Clare Jam Circle">
     <div class="circle-card-body">
       <h3>Clare</h3>
-      <p>Every Monday from 6pm</p>
+      <p>Every Monday from 6pm (currently on summer break)</p>
     </div>
   </a>
 </div>
