@@ -3,7 +3,7 @@ layout: jam-circle
 title: Galway
 permalink: /jam-circle/galway/
 image: /assets/images/jam_group_photo_1.jpg
-when: Every Saturday from 2pm - 6pm
+when: Most Saturdays 4pm to 7pm
 where: Galway Jam Circle, Áras na nGael, Dominic Street, Galway
 next_circle:
   name: Clare
